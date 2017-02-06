@@ -1,8 +1,10 @@
 package paisdeyann.floway.Threads;
 import paisdeyann.floway.Conexion.Conexion;
 import paisdeyann.floway.Objetos.Usuario;
+import paisdeyann.floway.Registro.Registro1;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -43,6 +45,9 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
     String passwordComprobar;
     Usuario usuario = null; // aqui guardaremos el usuario para usarlo en toda la aplicacion
 
+    boolean logueado = false;
+    Context contexto;
+
     @Override
 
     protected void onPreExecute() {  }
@@ -51,6 +56,7 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
     @Override
     protected TextView doInBackground(Object... params) {
 
+        contexto = (Context) params[3];
         userName = (EditText)params[0];
         usuarioComprobar = (String)params[1];
         passwordComprobar = (String)params[2];
@@ -66,11 +72,21 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
     protected void onProgressUpdate(Object... progress) {
 
 
+
+
     }
 
     @Override
     protected void onPostExecute(TextView t) {
-        //Toast.makeText(t.getContext(), "Acabo el Thread", Toast.LENGTH_SHORT).show();
+        if(logueado) {
+            Toast.makeText(contexto, "Logueado", Toast.LENGTH_SHORT).show();
+
+
+            Log.d("prueba","hola caracola");
+
+
+        }else
+            Toast.makeText(t.getContext(), "Usuario o contraseña incorrecto", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -79,8 +95,7 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
     }
 
 
-    public void conectarseALaRed(TextView view) {
-
+    public void conectarseALaRed(EditText view) {
 
 
             ConnectivityManager connMgr = (ConnectivityManager) view.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -150,6 +165,13 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
 
                         if(usuario.getPassword().equals(passwordComprobar)){
                             Log.d("prueba","logueado");
+                            logueado = true;
+
+                            Object[] objetos = new Object[1];
+                            objetos[0] = view;
+
+                            publishProgress(objetos);
+
                             //Toast.makeText(view.getContext(), "Usuario y contraseña correctos", Toast.LENGTH_SHORT).show();
                         }else{
                             Log.d("prueba","usuario no coincide con contraseña");

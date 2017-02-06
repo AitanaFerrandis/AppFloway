@@ -1,3 +1,4 @@
+
 package paisdeyann.floway;
 
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import paisdeyann.floway.Registro.Registro1;
 import paisdeyann.floway.Threads.Loguearse;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -31,10 +33,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(!username.getText().toString().equals("") && !password.getText().toString().equals("")){
 
 
-            Object[] objetos = new Object[3];
+            Object[] objetos = new Object[4];
             objetos[0] = username;
             objetos[1] = username.getText().toString();
             objetos[2] = password.getText().toString();
+            objetos[3] = getApplicationContext();
+
             Loguearse loguearse = new Loguearse();
             loguearse.execute(objetos);
 
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (v.getId()){
             case R.id.link :
-                Intent intent = new Intent(v.getContext(),RegistroActivity.class);
+                Intent intent = new Intent(v.getContext(),Registro1.class);
                 v.getContext().startActivity(intent);
                 break;
         }
