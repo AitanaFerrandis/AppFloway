@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"  android:padding="16dp"
+    android:background="@color/accent"
+    android:paddingTop="20dp">
+    <Button
+        android:text="Continuar"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/ButtonContinuarSegundoReg"
+        android:elevation="10dp"
+        android:layout_height="50dp"
+        android:background="@color/accent_dark"
+        android:gravity="center" />
+
+    <TextView
+        android:text="De donde eres?"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textViewCom"
+        android:textSize="40dp"
+        android:gravity="center"
+        android:textColor="@color/icons"
+        android:paddingBottom="10dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editPoblacion"
+        android:layout_below="@+id/textViewCom"
+        android:layout_centerHorizontal="true"
+        android:hint="Poblacion"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:background="@color/icons"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="16dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="textPersonName|number"
+        android:ems="10"
+        android:id="@+id/editCP"
+        android:hint="C.P"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:background="@color/icons"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="16dp"
+        android:layout_below="@+id/editPoblacion"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/editCP"
+        android:layout_alignParentStart="true">
+
+
+        <TextView
+            android:text="Horario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.AppCompat" />
+
+        <Switch
+            android:text="Mañana/Tarde"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/switch1"
+            android:layout_weight="0.84" />
+    </LinearLayout>
+
+</RelativeLayout>

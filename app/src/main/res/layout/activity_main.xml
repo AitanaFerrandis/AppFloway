@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    tools:context="paisdeyann.floway.MainActivity"
+    >
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/fondo" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@drawable/text"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true">
+
+                <EditText
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/User"
+                    android:backgroundTint="@android:color/background_light"
+                    android:hint="Usuario"
+                    android:focusable = "true"
+                    android:textColor="#ffffff"
+                    android:layout_gravity="center_horizontal"
+
+                    android:layout_centerHorizontal="true" />
+
+                <EditText
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:ems="10"
+                    android:id="@+id/con"
+                    android:backgroundTint="@android:color/background_light"
+                    android:hint="Contraseña"
+                    android:focusable = "true"
+                    android:textColor="#ffffff"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@+id/User"
+                    android:layout_alignStart="@+id/User"
+                    android:layout_marginTop="20dp" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="62dp"
+                    android:background="@drawable/button"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/button"
+                    android:layout_above="@+id/textView"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="15dp"
+                    android:onClick="login"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="No eres usuario aún?"
+                    android:id="@+id/textView"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="#ffffff"
+                    android:layout_above="@+id/link"
+                    android:layout_centerHorizontal="true"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Registrate"
+                    android:id="@+id/link"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/primary_dark"
+                    android:textStyle="bold"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

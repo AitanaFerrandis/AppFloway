@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/primary">
+
+    <Button
+        android:text="Continuar"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/ButtonContinuarprimerReg"
+        android:elevation="10dp"
+        android:layout_height="50dp"
+        android:background="@color/primary_dark"
+        android:gravity="center" />
+
+    <TextView
+        android:text="Comenzamos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textViewCom"
+        android:textSize="40dp"
+        android:gravity="center"
+        android:textColor="@color/icons"
+        android:paddingBottom="10dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editNombre"
+        android:layout_below="@+id/textViewCom"
+        android:layout_centerHorizontal="true"
+        android:hint="Nombre"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:background="@color/icons"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="16dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editApellidos"
+        android:layout_below="@+id/editNombre"
+        android:layout_alignParentStart="true"
+        android:hint="Apellidos"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:background="@color/icons"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="16dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editUser"
+        android:layout_below="@+id/editApellidos"
+        android:layout_alignParentStart="true"
+        android:hint="Usuario"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:background="@color/icons"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="16dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/editTextPass"
+        android:layout_below="@+id/editUser"
+        android:hint="Pass"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:background="@color/icons"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="16dp" />
+
+
+</RelativeLayout>
