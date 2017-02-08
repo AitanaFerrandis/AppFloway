@@ -2,7 +2,9 @@ package paisdeyann.floway.Registro;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -13,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,12 +24,14 @@ import com.soundcloud.android.crop.Crop;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
 
 import paisdeyann.floway.R;
 
 public class Registro3 extends AppCompatActivity {
     ImageView imageView;
+    Button btnempezar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +51,16 @@ public class Registro3 extends AppCompatActivity {
 
         imageView.setImageDrawable(roundedDrawable);
 
+        btnempezar = (Button) findViewById(R.id.ButtonContinuarTercerReg);
+
+        btnempezar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                guardaPreferencias();
+
+            }
+        });
 
     }
 
@@ -110,4 +125,20 @@ public class Registro3 extends AppCompatActivity {
             Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
+
+    public void guardaPreferencias(){
+        SharedPreferences mySharedPreferences = getSharedPreferences(Registro1.PREFS, Registro1.MODE_APPEND);
+        //guardamos todas las preferencias con el editor
+        SharedPreferences.Editor editor = mySharedPreferences.edit();
+        Bitmap bm = BitmapFactory.decodeFile("/data/misc/wallpaper/imagen1.jpeg");
+        editor.putString("Imagen", bm.toString());
+
+        editor.commit();
+
+
+
+
+    }
 }
+
