@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +46,7 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
     String passwordComprobar;
     Usuario usuario = null; // aqui guardaremos el usuario para usarlo en toda la aplicacion
 
-    boolean logueado = false;
+    String logueado = "false";
     Context contexto;
 
     @Override
@@ -78,15 +79,14 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
 
     @Override
     protected void onPostExecute(TextView t) {
-        if(logueado) {
+        if(logueado.equals("true")) {
             Toast.makeText(contexto, "Logueado", Toast.LENGTH_SHORT).show();
 
-
-            Log.d("prueba","hola caracola");
-
-
-        }else
+        }else if(logueado.equals("false")) {
             Toast.makeText(t.getContext(), "Usuario o contraseña incorrecto", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(t.getContext(),"Clave Key Incorrecta",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -107,7 +107,7 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
             // podem fer la connexió a alguna URL
                 //Toast.makeText(view.getContext(), "CONECTO", Toast.LENGTH_SHORT).show();
 
-                String cadenaConexion = Conexion.SERVER+"/apiFloway/apiNueva.php?where="+usuarioComprobar;
+                String cadenaConexion = Conexion.SERVER+"/apiFloway/apiNueva.php?where="+usuarioComprobar+Conexion.APIKEY;
                 Log.d("prueba",cadenaConexion);
                 URL url;
                 InputStream is = null;  // esto lo usaremos para conseguir un String de lo que venga
@@ -152,37 +152,47 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
 
 
                     // aqui vamos a parsear el JASON a un objeto usuario
-                    Gson gson = new Gson(); // usaremos esto para pasear el jason
-                    JsonParser parseador = new JsonParser();    // necesitamos este objeto para conseguir el elemento raiz del String
-                    JsonElement raiz = parseador.parse(respuestaJason); // conseguimos el elemnto raiz del string
-                    JsonArray lista = raiz.getAsJsonArray();    // el elemento raiz es un array de objetos jason por eso nos creamos un objeto JsonArray y lo cogemos con este metodo
-                    for (JsonElement elemento : lista) {    // recorremos el JsonArray lista con este for each abreviado y nos creamos un nuevo usuario
-                        usuario = gson.fromJson(elemento, Usuario.class);
-                       // System.out.println(u.getNombre());
-                    }
 
-                    if(usuario != null){
+                    if(respuestaJason.toString().equals("fallo api key\n")){
+                        Log.d("prueba","key incorrecta");
+                        logueado = "key incorrecta";
+                    }else {
+                        Gson gson = new Gson(); // usaremos esto para pasear el jason
+                        JsonParser parseador = new JsonParser();    // necesitamos este objeto para conseguir el elemento raiz del String
 
-                        if(usuario.getPassword().equals(passwordComprobar)){
-                            Log.d("prueba","logueado");
-                            logueado = true;
 
-                            Object[] objetos = new Object[1];
-                            objetos[0] = view;
+                        JsonElement raiz = parseador.parse(respuestaJason); // conseguimos el elemnto raiz del string
+                        JsonArray lista = raiz.getAsJsonArray();    // el elemento raiz es un array de objetos jason por eso nos creamos un objeto JsonArray y lo cogemos con este metodo
 
-                            publishProgress(objetos);
-
-                            //Toast.makeText(view.getContext(), "Usuario y contraseña correctos", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Log.d("prueba","usuario no coincide con contraseña");
-                           // Toast.makeText(view.getContext(), "Usuario y contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                        for (JsonElement elemento : lista) {    // recorremos el JsonArray lista con este for each abreviado y nos creamos un nuevo usuario
+                            usuario = gson.fromJson(elemento, Usuario.class);
+                            // System.out.println(u.getNombre());
                         }
 
-                    }else{
-                        Log.d("prueba","no existe usuario");
-                       // Toast.makeText(view.getContext(), "No hay ningun usuario con ese nombre", Toast.LENGTH_SHORT).show();
-                    }
 
+                        if (usuario != null) {
+
+                            if (usuario.getPassword().equals(passwordComprobar)) {
+                                Log.d("prueba", "logueado");
+                                // Log.d("prueba","nombre"+usuario.getNombre()+" apellido "+usuario.getApellidos()+" pass "+usuario.getPassword()+" usuario "+usuario.getUsuario()+" id "+usuario.getId_usuario()+" cp "+usuario.getCp()+" horario "+usuario.getHorario()+" poblacion "+usuario.getPoblacion()+" puntuacion "+usuario.getPuntuacion()+" foto "+usuario.getFoto());
+                                logueado = "true";
+
+                                Object[] objetos = new Object[1];
+                                objetos[0] = view;
+
+                                publishProgress(objetos);
+
+                                //Toast.makeText(view.getContext(), "Usuario y contraseña correctos", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.d("prueba", "usuario no coincide con contraseña");
+                                // Toast.makeText(view.getContext(), "Usuario y contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } else {
+                            Log.d("prueba", "no existe usuario");
+                            // Toast.makeText(view.getContext(), "No hay ningun usuario con ese nombre", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
                    /* List <Usuario> usuarios =
                             new ArrayList<Usuario>();

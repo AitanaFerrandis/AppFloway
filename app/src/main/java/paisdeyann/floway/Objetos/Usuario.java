@@ -8,43 +8,38 @@ import java.sql.Blob;
 public class Usuario {
 
 
-
-    String id;
+    int id_usuario;
     String nombre;
     String apellidos;
     String usuario;
     String password;
-    String nif;
-    String direccion;
     String poblacion;
     String cp;
-    String email;
-    String foto;
     String horario;
-    String puntuacion;
+    int puntuacion;
+    String foto;
 
-    public Usuario(String id, String nombre, String apellidos, String usuario, String password, String nif, String direccion, String poblacion, String cp, String email, String foto, String horario, String puntuacion) {
-        this.id = id;
+
+    public Usuario(int id, String nombre, String apellidos, String usuario, String password, String poblacion, String cp, String horario, int puntuacion, String blob) {
+        this.id_usuario = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.usuario = usuario;
         this.password = password;
-        this.nif = nif;
-        this.direccion = direccion;
         this.poblacion = poblacion;
         this.cp = cp;
-        this.email = email;
-        this.foto = foto;
         this.horario = horario;
         this.puntuacion = puntuacion;
+        this.foto = blob;
+
     }
 
-    public String getId() {
-        return id;
+    public int getId_usuario() {
+        return id_usuario;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
     }
 
     public String getNombre() {
@@ -79,22 +74,6 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getNif() {
-        return nif;
-    }
-
-    public void setNif(String nif) {
-        this.nif = nif;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
     public String getPoblacion() {
         return poblacion;
     }
@@ -111,22 +90,6 @@ public class Usuario {
         this.cp = cp;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
-    }
-
     public String getHorario() {
         return horario;
     }
@@ -135,11 +98,19 @@ public class Usuario {
         this.horario = horario;
     }
 
-    public String getPuntuacion() {
+    public int getPuntuacion() {
         return puntuacion;
     }
 
-    public void setPuntuacion(String puntuacion) {
+    public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }
