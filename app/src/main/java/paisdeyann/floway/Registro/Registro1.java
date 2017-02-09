@@ -59,20 +59,21 @@ public class Registro1 extends AppCompatActivity {
                 //y hacemos un intent a la siguiente pantalla de registro
                 //de lo contrario mostramos por pantalla un mensaje para que los rellene
                 if (nombre.getText().toString().equals("") || apellidos.getText().toString().equals("") ||
-                    usuario.getText().toString().equals("") || contraseña.getText().toString().equals("")){
+                        usuario.getText().toString().equals("") || contraseña.getText().toString().equals("")) {
                     Toast.makeText(Registro1.this, "Rellena todos los campos antes de continuar, por favor.", Toast.LENGTH_SHORT).show();
 
-                }else if(!consultaUsuario()){
+                } else if (!consultaUsuario() && respuesta == false) {
 
+                    Log.d("syso","entro pq el usuario no esta registrado");
                     guardaPreferencias();
 
                     Intent intent = new Intent(getApplicationContext(), Registro2.class);
                     startActivity(intent);
-
                 }
 
-
             }
+
+
         });
 
     }
@@ -83,29 +84,35 @@ public class Registro1 extends AppCompatActivity {
         //nos devuelve un JSon el cual parseamos en un boleano que nos dice si existe ese usuario o no
         OkHttpClient client = new OkHttpClient();
         Request Usuario = new Request.Builder()
-                .url(Conexion.SERVER+"/apiFloway/apiNueva.php"+ "?usuario=" + nombre.getText() + Conexion.APIKEY)
+                .url(Conexion.SERVER+"/apiFloway/apiNueva.php"+ "?usuario=" + usuario.getText() + Conexion.APIKEY)
                 .build();
         Log.v("syso", "Peticion: " + Usuario.toString());
 
         Call callUsuario = client.newCall(Usuario);
+        Log.d("syso","empiezo toda la movida");
         callUsuario.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+
                 Log.v("syso", "Fallo de peticion");
                 respuesta = false;
+
+
             }
 
             //
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 {
+                    Log.d("syso","entro en el response");
                     try {
                         String jsonData = response.body().string();
                         Log.v("sysoImg", jsonData);
-                        if (response.isSuccessful()) {
 
+                        if (response.isSuccessful()) {
                             JSONObject json = new JSONObject(jsonData);
                             respuesta = json.getBoolean("existe");
+                            Log.d("syso", "el booleano es: "+ respuesta);
 
                         }
 
@@ -119,18 +126,20 @@ public class Registro1 extends AppCompatActivity {
             }
         });
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        if(respuesta){
+            Toast.makeText(this, "El nombre de usuario ya existe, por favor inserte otro", Toast.LENGTH_SHORT).show();
+        }
+
         return respuesta;
 
     }
-
-
-
-
-
-
-
-
-
 
     //el método guardaPreferencias crea el sharedPreferences y le pasa el archivo donde guardarlo y lo pone en modo privado
     public void guardaPreferencias(){

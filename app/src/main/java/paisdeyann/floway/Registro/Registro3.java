@@ -1,5 +1,6 @@
 package paisdeyann.floway.Registro;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.net.URI;
 
 import paisdeyann.floway.R;
+import paisdeyann.floway.Threads.InsertarUsuario;
 
 public class Registro3 extends AppCompatActivity {
     ImageView imageView;
@@ -58,6 +60,7 @@ public class Registro3 extends AppCompatActivity {
             public void onClick(View v) {
 
                 guardaPreferencias();
+                insertarUsuario();
 
             }
         });
@@ -132,12 +135,50 @@ public class Registro3 extends AppCompatActivity {
         //guardamos todas las preferencias con el editor
         SharedPreferences.Editor editor = mySharedPreferences.edit();
         Bitmap bm = BitmapFactory.decodeFile("/data/misc/wallpaper/imagen1.jpeg");
-        editor.putString("Imagen", bm.toString());
+
+        //editor.putString("Imagen", bm.toString());
+        editor.putString("Imagen","");
 
         editor.commit();
 
 
 
+
+    }
+
+    public void insertarUsuario(){
+
+        SharedPreferences mySharedPreferences = getSharedPreferences(Registro1.PREFS, Activity.MODE_PRIVATE);
+        // $nombre,$apellidos,$usuario,$password,$poblacion,$cp,$puntuacion,$horario,$data
+
+        String nombre = mySharedPreferences.getString("Nombre","");
+        String apellidos = mySharedPreferences.getString("Apellidos","");
+        String usuario = mySharedPreferences.getString("Usuario","");
+        String password = mySharedPreferences.getString("Contraseña","");
+        String poblacion = mySharedPreferences.getString("Población","");
+        String cp = mySharedPreferences.getString("CP","");
+        int puntuacion = 0;
+        String horario = mySharedPreferences.getString("Horario","");
+        String data = "";
+
+        //Toast.makeText(this, nombre+apellidos+usuario+password+poblacion+cp+horario, Toast.LENGTH_SHORT).show();
+
+
+        Object[] objetos = new Object[10];
+        objetos[0] = nombre;
+        objetos[1] = apellidos;
+        objetos[2] = usuario;
+        objetos[3] = password;
+        objetos[4] = poblacion;
+        objetos[5] = cp;
+        objetos[6] = puntuacion;
+        objetos[7] = horario;
+        objetos[8] = data;
+        objetos[9] = imageView;
+
+
+        InsertarUsuario insertarUsuario = new InsertarUsuario();
+        insertarUsuario.execute(objetos);
 
     }
 }
