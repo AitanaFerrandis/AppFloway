@@ -1,7 +1,6 @@
 package paisdeyann.floway.Threads;
 import paisdeyann.floway.Conexion.Conexion;
 import paisdeyann.floway.Objetos.Usuario;
-import paisdeyann.floway.Registro.Registro1;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,13 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,10 +26,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-
 
 
 public class Loguearse extends AsyncTask<Object, Object, TextView> implements View.OnClickListener{
@@ -81,6 +70,9 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
     protected void onPostExecute(TextView t) {
         if(logueado.equals("true")) {
             Toast.makeText(contexto, "Logueado", Toast.LENGTH_SHORT).show();
+
+           // Intent intent = new Intent(t.getContext(),Programa.class);
+           // t.getContext().startActivity(intent);
 
         }else if(logueado.equals("false")) {
             Toast.makeText(t.getContext(), "Usuario o contraseña incorrecto", Toast.LENGTH_SHORT).show();

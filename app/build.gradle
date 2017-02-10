@@ -26,4 +26,9 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.google.android.gms:play-services:9.4.0'
+    testCompile 'junit:junit:4.12'
+
+
 }

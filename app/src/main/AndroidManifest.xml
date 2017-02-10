@@ -27,11 +27,10 @@
             android:name=".Menu_Principal"
             android:label="@string/title_activity_menu__principal"
             android:theme="@style/AppTheme" />
-        <activity android:name=".RegistroActivity"></activity>
-        <activity android:name=".Registro.Registro1"></activity>
-        <activity android:name=".Registro.Registro2"></activity>
-        <activity android:name=".Registro.Registro3"></activity>
-
+        <activity android:name=".RegistroActivity" />
+        <activity android:name=".Registro.Registro1" />
+        <activity android:name=".Registro.Registro2" />
+        <activity android:name=".Registro.Registro3" />
     </application>
 
 </manifest>
