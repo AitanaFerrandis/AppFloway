@@ -1,8 +1,10 @@
 package paisdeyann.floway.Threads;
 import paisdeyann.floway.Conexion.Conexion;
+import paisdeyann.floway.Menu_Principal;
 import paisdeyann.floway.Objetos.Usuario;
 import paisdeyann.floway.Registro.Registro1;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -49,6 +51,7 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
     String logueado = "false";
     Context contexto;
 
+
     @Override
 
     protected void onPreExecute() {  }
@@ -81,6 +84,9 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
     protected void onPostExecute(TextView t) {
         if(logueado.equals("true")) {
             Toast.makeText(contexto, "Logueado", Toast.LENGTH_SHORT).show();
+
+            Intent i = new Intent(t.getContext(),Menu_Principal.class);
+            t.getContext().startActivity(i);
 
         }else if(logueado.equals("false")) {
             Toast.makeText(t.getContext(), "Usuario o contraseña incorrecto", Toast.LENGTH_SHORT).show();
