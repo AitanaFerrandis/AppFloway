@@ -44,6 +44,38 @@ public class Usuario {
 
     }
 
+    public int getConductor() {
+        return conductor;
+    }
+
+    public void setConductor(int conductor) {
+        this.conductor = conductor;
+    }
+
+    public int getConectado() {
+        return conectado;
+    }
+
+    public void setConectado(int conectado) {
+        this.conectado = conectado;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
     public int getId_usuario() {
         return id_usuario;
     }
