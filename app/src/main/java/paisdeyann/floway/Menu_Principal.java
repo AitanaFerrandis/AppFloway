@@ -1,8 +1,7 @@
 package paisdeyann.floway;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -14,34 +13,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
-import android.os.Bundle;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
-import android.view.animation.TranslateAnimation;
+
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
+import android.view.View.OnClickListener;
+import android.widget.Toast;
+
+
+import paisdeyann.floway.FragmentsTabs.MapViewFragment;
+import paisdeyann.floway.FragmentsTabs.PantallaChat;
+import paisdeyann.floway.FragmentsTabs.PantallaTransacciones;
 
 
 public class Menu_Principal extends AppCompatActivity
@@ -49,12 +38,17 @@ public class Menu_Principal extends AppCompatActivity
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    FloatingActionButton fab;
-
+    FloatingActionsMenu menuMultipleActions;
+    MapViewFragment map;
+    int positionAnt=0;
+    boolean pasCon = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu__principal);
+        map=new MapViewFragment();
+        map.setContext(getApplicationContext());
+
         //------Seccion Navigation---------------------------------------------------
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -90,14 +84,95 @@ public class Menu_Principal extends AppCompatActivity
 
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+        //listener de los tabs para las animaciones
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 1:
+                        muestraBoton();
+                        positionAnt = position;
+                        break;
+                    default:
+                        if (positionAnt==1) {
+                            desapareceBoton();
+                        }
+                        positionAnt = position;
+                        break;
+                }
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
+
+
+        //parte de los botones fab
+        final View actionB = findViewById(R.id.boton_b);
+
+        com.getbase.floatingactionbutton.FloatingActionButton actionC = new com.getbase.floatingactionbutton.FloatingActionButton(getBaseContext());
+        actionC.setTitle("Elegir Pasajero / Conductor");
+        actionC.setImageDrawable(getResources().getDrawable(R.drawable.mostrar));
+
+
+
+
+        actionC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionB.setVisibility(actionB.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+
+            }
+        });
+
+        actionB.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pasCon = !pasCon;
+                if(pasCon){
+                    //cambia el texto y el color
+                    //actionB.setDrawingCacheBackgroundColor(getResources().getColor(R.color.pink));
+                    actionB.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.primary)));
+                    actionB.setBackground(getResources().getDrawable(R.drawable.android_pasajero));
+                    Toast.makeText(Menu_Principal.this, "Eres Pasajero", Toast.LENGTH_SHORT).show();
+
+                }else{
+                    actionB.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.accent)));
+                    actionB.setBackground(getResources().getDrawable(R.drawable.coche_android));
+                    Toast.makeText(Menu_Principal.this, "Eres Conductor", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+
+
+        menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+        menuMultipleActions.addButton(actionC);
+        menuMultipleActions.setVisibility(View.INVISIBLE);
+
+
+    }
+
+    //animaciones
+    public void muestraBoton(){
+        menuMultipleActions.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in));
+        menuMultipleActions.setVisibility(View.VISIBLE);
+
+    }
+    public void desapareceBoton(){
+
+        menuMultipleActions.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out));
+        menuMultipleActions.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -185,9 +260,6 @@ public class Menu_Principal extends AppCompatActivity
                 case 1:
                     View rootView = inflater.inflate(R.layout.fragment_pantalla_chat, container, false);
                     return rootView;
-                case 2:
-                    View rootView2 = inflater.inflate(R.layout.fragment_pantalla_mapa, container, false);
-                    return rootView2;
                 case 3:
                     View rootView3= inflater.inflate(R.layout.fragment_pantalla_transacciones, container, false);
                     return rootView3;
@@ -209,9 +281,15 @@ public class Menu_Principal extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            Fragment fragment = null;
+
+            switch (position) {
+                case 1:
+                    fragment = map;
+                    return fragment;
+            }
+
+                return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
