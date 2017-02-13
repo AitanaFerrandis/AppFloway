@@ -21,6 +21,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,6 +80,8 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
             Intent i = new Intent(t.getContext(),Menu_Principal.class);
             t.getContext().startActivity(i);
 
+        }else if(logueado.equals("usuario no existe")){
+            Toast.makeText(t.getContext(), "Usuario no existe", Toast.LENGTH_SHORT).show();
         }else if(logueado.equals("false")) {
             Toast.makeText(t.getContext(), "Usuario o contraseña incorrecto", Toast.LENGTH_SHORT).show();
         }else{
@@ -102,8 +107,9 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
             // podem fer la connexió a alguna URL
                 //Toast.makeText(view.getContext(), "CONECTO", Toast.LENGTH_SHORT).show();
 
-                String cadenaConexion = Conexion.SERVER+"/apiFloway/apiNueva.php?where="+usuarioComprobar+Conexion.APIKEY;
-                Log.d("prueba",cadenaConexion);
+               String cadenaConexion = Conexion.SERVER+"/APIFLOWAY-PHP/apiNueva.php?where="+usuarioComprobar+"&"+Conexion.APIKEY;
+               // String cadenaConexion = Conexion.SERVER+"/APIFLOWAY-PHP/apiNueva.php?"+Conexion.APIKEY;
+                Log.d("prueba","conexion para loguearse: "+cadenaConexion);
                 URL url;
                 InputStream is = null;  // esto lo usaremos para conseguir un String de lo que venga
 
@@ -132,18 +138,8 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
                    // is = new BufferedInputStream(conn.getInputStream());
                     is = conn.getInputStream();
                     respuestaJason = readStream(is);
+                    Log.d("prueba","respuestaLogin: "+respuestaJason);
 
-                    /*
-                    try {
-                        objetoJason = new JSONArray(respuestaJason);
-                        String temp = objetoJason.getJSONObject(0).getString("nombre");
-                        Log.d("prueba",temp);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-
-                    }*/
-
-                   // Log.d("prueba",respuestaJason);
 
 
                     // aqui vamos a parsear el JASON a un objeto usuario
@@ -151,7 +147,11 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
                     if(respuestaJason.toString().equals("fallo api key\n")){
                         Log.d("prueba","key incorrecta");
                         logueado = "key incorrecta";
+                    }else if(respuestaJason.toString().equals("[]\n")){
+                        Log.d("prueba","no existe el usuario");
+                        logueado = "usuario no existe";
                     }else {
+
                         Gson gson = new Gson(); // usaremos esto para pasear el jason
                         JsonParser parseador = new JsonParser();    // necesitamos este objeto para conseguir el elemento raiz del String
 
@@ -161,9 +161,30 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
 
                         for (JsonElement elemento : lista) {    // recorremos el JsonArray lista con este for each abreviado y nos creamos un nuevo usuario
                             usuario = gson.fromJson(elemento, Usuario.class);
-                            // System.out.println(u.getNombre());
+                            Log.d("prueba",usuario.getNombre());
                         }
 
+
+/*
+                        JSONArray raiz = new JSONArray(respuestaJason);
+
+                        JSONArray objeto = raiz.getJSONArray(0);
+
+                        int id = objeto.getInt(0);
+                        String nombre = objeto.getString(1);
+                        String apellido = objeto.getString(2);
+                        String user = objeto.getString(3);
+                        String password = objeto.getString(4);
+                        String poblacion = objeto.getString(5);
+                        int cp = objeto.getInt(6);
+                        String horario = objeto.getString(7);
+                        int puntuacion = objeto.getInt(8);
+                        String foto = objeto.getString(9);
+
+                       // int id, String nombre, String apellidos, String usuario, String password, String poblacion, String cp, String horario, int puntuacion, String blob
+                        Usuario usuario = new Usuario(id,nombre,apellido,user,password,poblacion,""+cp,horario,puntuacion,foto);
+*/
+                        usuario.imprimir();
 
                         if (usuario != null) {
 
@@ -202,7 +223,7 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
                 } catch (IOException e) {
 
                     e.printStackTrace();
-                }finally {
+                } finally {
 
                     if(is != null){
                         try {

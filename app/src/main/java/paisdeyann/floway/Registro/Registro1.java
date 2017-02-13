@@ -84,7 +84,7 @@ public class Registro1 extends AppCompatActivity {
         //nos devuelve un JSon el cual parseamos en un boleano que nos dice si existe ese usuario o no
         OkHttpClient client = new OkHttpClient();
         Request Usuario = new Request.Builder()
-                .url(Conexion.SERVER+"/apiFloway/apiNueva.php"+ "?usuario=" + usuario.getText() + Conexion.APIKEY)
+                .url(Conexion.SERVER+"/APIFLOWAY-PHP/apiNueva.php"+ "?usuario=" + usuario.getText() +"&" +Conexion.APIKEY)
                 .build();
         Log.v("syso", "Peticion: " + Usuario.toString());
 

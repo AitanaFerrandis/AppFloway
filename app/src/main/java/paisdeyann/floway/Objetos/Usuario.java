@@ -1,5 +1,7 @@
 package paisdeyann.floway.Objetos;
 
+import android.util.Log;
+
 import java.sql.Blob;
 
 /**
@@ -18,9 +20,13 @@ public class Usuario {
     String horario;
     int puntuacion;
     String foto;
+    int conductor;
+    int conectado;
+    double longitud;
+    double latitud;
 
 
-    public Usuario(int id, String nombre, String apellidos, String usuario, String password, String poblacion, String cp, String horario, int puntuacion, String blob) {
+    public Usuario(int id, String nombre, String apellidos, String usuario, String password, String poblacion, String cp, String horario, int puntuacion, String blob, int conductor, int conectado, double longitud, double latitud) {
         this.id_usuario = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -31,6 +37,10 @@ public class Usuario {
         this.horario = horario;
         this.puntuacion = puntuacion;
         this.foto = blob;
+        this.conductor = conductor;
+        this.conectado = conectado;
+        this.longitud = longitud;
+        this.latitud = latitud;
 
     }
 
@@ -112,5 +122,9 @@ public class Usuario {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public void imprimir(){
+        Log.d("prueba",id_usuario+" "+nombre+" "+apellidos+" "+usuario+" "+password+" "+poblacion+" "+cp+" "+horario+" "+puntuacion+" "+foto+" "+conectado+" "+conductor+" "+longitud+" "+latitud);
     }
 }
