@@ -78,11 +78,13 @@ public class InsertarUsuario extends AsyncTask<Object, Object, Object> {
 
     public void insertarUsuario(Object[] parametros){
 
-        String cadenaConexion = Conexion.SERVER+"/apiFloway/apiNueva.php";
+        String cadenaConexion = Conexion.SERVER+"/APIFLOWAY-PHP/apiNueva.php"+"?"+Conexion.APIKEY;
 
 
         String POST_PARAMS = "nombre="+parametros[0]+"&apellidos="+parametros[1]+"&usuario="+parametros[2]+"&password="+parametros[3]
                 +"&poblacion="+parametros[4]+"&codigoPostal="+parametros[5]+"&puntuacion="+parametros[6]+"&horario="+parametros[7];
+
+
         Log.d("prueba",cadenaConexion);
         Log.d("prueba",POST_PARAMS);
         URL obj = null;
@@ -92,15 +94,12 @@ public class InsertarUsuario extends AsyncTask<Object, Object, Object> {
             con.setRequestMethod("POST");
             con.setDoOutput(true);
 
-           // String urlParameters = "body=Pankaj";
+
             DataOutputStream dStream = new DataOutputStream(con.getOutputStream());
                     dStream.writeBytes(POST_PARAMS); //Writes out the string to the underlying output stream as a sequence of bytes<br />
             dStream.flush(); // Flushes the data output stream.<br />
             dStream.close(); // Closing the output stream.<br />
             // For POST only - START
-
-
-
 
             int responseCode = con.getResponseCode();
             System.out.println("POST Response Code :: " + responseCode);

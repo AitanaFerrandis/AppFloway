@@ -163,6 +163,7 @@ public class Registro3 extends AppCompatActivity {
 
         //Toast.makeText(this, nombre+apellidos+usuario+password+poblacion+cp+horario, Toast.LENGTH_SHORT).show();
 
+        Log.d("prueba","voy a insertar: "+nombre+apellidos+usuario+password+poblacion+cp+horario);
 
         Object[] objetos = new Object[10];
         objetos[0] = nombre;

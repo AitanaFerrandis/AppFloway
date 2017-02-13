@@ -11,10 +11,11 @@ import android.view.View;
 
 public class Conexion {
 
-   //public static final String SERVER = "http://192.168.1.128";
-    public static final String SERVER = "http://10.10.5.102";
+   //public static final String SERVER = "http://192.168.1.131";
 
-    public static final String APIKEY="&api_key=HDRYsemQRQRPRT";
+    public static final String SERVER = "http://54.93.101.246";
+
+    public static final String APIKEY="api_key=HDRYsemQRQRPRT";
 
 
 
