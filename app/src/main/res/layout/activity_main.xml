@@ -52,7 +52,8 @@
                     android:textColor="#ffffff"
                     android:layout_gravity="center_horizontal"
 
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"
+                    android:text="pecaca" />
 
                 <EditText
                     android:layout_width="280dp"
@@ -67,7 +68,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_below="@+id/User"
                     android:layout_alignStart="@+id/User"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:text="floway" />
 
                 <Button
                     android:layout_width="wrap_content"
