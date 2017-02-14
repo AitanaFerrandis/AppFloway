@@ -4,12 +4,18 @@ import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -23,7 +29,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -34,46 +40,23 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.Gson;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import paisdeyann.floway.Conexion.Conexion;
-import paisdeyann.floway.MainActivity;
-import paisdeyann.floway.Manifest;
+
 import paisdeyann.floway.Menu_Principal;
 import paisdeyann.floway.Objetos.Usuario;
 import paisdeyann.floway.R;
 import paisdeyann.floway.Threads.ConseguirUsuariosPorRadio;
 
-import static com.google.android.gms.R.id.url;
-import static paisdeyann.floway.R.id.container;
+import static android.content.Context.LOCATION_SERVICE;
+
 
 /**
  * Created by Dario on 11/02/2017.
  */
 
-public class MapViewFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMarkerClickListener {
+public class MapViewFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener {
 
     MapView mMapView;
     private GoogleMap mgoogleMap;
@@ -84,14 +67,34 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Goo
     double tuLongitud;
 
     MapViewFragment esteActivity;
+    LocationManager locationManager;
+    Menu_Principal activity;
+
+    LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            tuLatitud = location.getLatitude();
+            tuLongitud = location.getLongitude();
+            setMarkersPasajeros();
+            Log.v("syso","latitud y longitud "+tuLatitud+" , "+tuLongitud);
+        }
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+        @Override
+        public void onProviderEnabled(String provider) {
+        }
+        @Override
+        public void onProviderDisabled(String provider) {
+        }
+
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_maps, container, false);
 
         esteActivity = this;
-        tuLatitud =39.590381;
-        tuLongitud= -0.533108;
 
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -109,7 +112,7 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Goo
             public void onMapReady(GoogleMap mMap) {
                 mgoogleMap = mMap;
                 addInfo();
-
+                getUbicacion();
 
                 double radio = 10;
                // double latitud = 39.590381 ;
@@ -125,70 +128,98 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Goo
                 objetos[4] = conectado;             // conectado    int 1 conectado 0 desconectado
                 objetos[5] = esteActivity;          // este fragment
 
-
                 ConseguirUsuariosPorRadio threadConseguirUsuarios = new ConseguirUsuariosPorRadio();
 
                 threadConseguirUsuarios.execute(objetos);
-
-                // For showing a move to my location button
-                /*
-                * Esto le dara permisos a el fragment para obtener su ubicacion pero falta darle un contexto
-
-                if (ContextCompat.checkSelfPermission(Menu_Principal.class,
-                        Manifest.permission.MAPS_RECEIVE){
-                    googleMap.setMyLocationEnabled(true);
-
-                }
-                */
-
-
 
 
                 setMarkersPasajeros();
             }
         });
 
+
+
+
         return rootView;
     }
-    public void setContext(Context con){
-        context = con;
-    }
-/*
-    public void getUsers(){
-        try {
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url("http://54.93.101.246/APIFLOWAY-PHP/apiNueva.php?conectado=1&conductor=1&radio=5&longitud=-0.533108&latitud=39.590381&"+ Conexion.APIKEY)
-                    .build();
-            Response responses = null;
-
-            Log.d("prueba","llego getUsers");
-            Log.d("prueba","http://54.93.101.246/APIFLOWAY-PHP/apiNueva.php?conectado=1&conductor=1&radio=5&longitud=-0.533108&latitud=39.590381&"+ Conexion.APIKEY);
-
-                responses = client.newCall(request).execute();
-
-                String jsonData = responses.body().string();
-                Log.d("prueba",jsonData);
-                Gson gson = new Gson();
-
-                JsonParser parseador = new JsonParser();
-                JsonElement raiz = parseador.parse(jsonData);
-                JsonArray listaUsuarios = raiz.getAsJsonArray();
-
-                for (JsonElement elemento: listaUsuarios) {
-                    Usuario u = gson.fromJson(elemento,Usuario.class);
-                    u.imprimir();
-                }
-
-
-        }catch (IOException e) {
-            e.printStackTrace();
+    protected boolean isLocationEnabled(){
+        String le = LOCATION_SERVICE;
+        locationManager = (LocationManager) context.getSystemService(le);
+        if(!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            return false;
+        } else {
+            return true;
         }
     }
-*/
+
+    public void setContext(Context con, Menu_Principal me){
+        context = con;
+        activity = me;
+    }
+
+    public void getUbicacion(){
+
+        long minTime=100;
+        float minDistance=100;
+        locationManager = (LocationManager) activity.getSystemService(LOCATION_SERVICE);
+
+        if(checkLocationPermission()) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, mLocationListener);
+        }
+    }
+
+    public boolean checkLocationPermission()
+    {
+        if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, android.Manifest.permission.ACCESS_FINE_LOCATION))
+            {
+                ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        1);
+            }
+            else
+            {
+                ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        2);
+            }
+            return false;
+        }
+        else
+        {
+            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            {
+            }
+
+            return true;
+        }
+    }
+
     public void setMarkersPasajeros(){
+
+        if(!isLocationEnabled()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setTitle("Activa la ubicacion")
+                    .setMessage("")
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            })
+                    .setNegativeButton("CANCELAR",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                    getUbicacion();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
         mgoogleMap.clear();
-        addInfo();
+
+
+
         // For dropping a marker at a point on the Map
         LatLng marker = new LatLng(this.tuLatitud, this.tuLongitud);
 
@@ -227,28 +258,9 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Goo
         mgoogleMap.addMarker(markerMaps);
         mgoogleMap.setOnMarkerClickListener(this);
     }
-    /*
-    public void setMarkersPasajeros(){
-        mgoogleMap.clear();
-        addInfo();
-        // For dropping a marker at a point on the Map
-        LatLng marker = new LatLng(-34, 151);
-        Log.d("prueba","estoy en la marca pasajero");
-        mgoogleMap.addMarker(new MarkerOptions()
-                .position(marker)
-                .title("Marker Title")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.android_pasajero))
-                .snippet("Marker Description"));
 
-        // For zooming automatically to the location of the marker
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(marker).zoom(12).build();
-        mgoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-
-    }
-*/
     public void addInfo(){
-        final LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        final LayoutInflater inflater = (LayoutInflater) activity.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
 
         if (mgoogleMap != null) {
             mgoogleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -280,12 +292,11 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Goo
     public void onMapReady(GoogleMap googleMap) {
 
 
-
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
+    getUbicacion();
     }
 
     @Override
@@ -295,11 +306,6 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Goo
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
 
     }
 
