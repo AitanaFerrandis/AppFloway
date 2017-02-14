@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FloWay</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_sign_in">Entrar o registrarse</string>
+    <string name="action_sign_in_short">Entrar</string>
+    <string name="btn_continuar_registro_1">Continuar</string>
+    <string name="btn_continuar_registro_2">Continuar</string>
+    <string name="btn_empezar_registro_3">Start</string>
+    <string name="btn_img_registro_3">Imagen</string>
+    <string name="btn_registrate_activity_main">Regístrate</string>
+    <string name="error_field_required">Este campo es obligatorio</string>
+    <string name="error_incorrect_password">La contraseña es incorrecta</string>
+    <string name="error_invalid_email">El email no es válido</string>
+    <string name="error_invalid_password">La contraseña es demasiado corta</string>
+    <string name="hint_editext_contraseña_activity_main">Contraseña</string>
+    <string name="hint_editext_usuario_activity_main">Usuario</string>
+    <string name="hint_editxt_apellidos_registro_1">Apellidos</string>
+    <string name="hint_editxt_contraseña_registro_1">Contraseña</string>
+    <string name="hint_editxt_cp_registro_2">C.P</string>
+    <string name="hint_editxt_nombre_registro_1">Nombre</string>
+    <string name="hint_editxt_poblacion_registro_2">Población</string>
+    <string name="hint_editxt_usuario_registro_1">Usuario</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña (opcional)</string>
+    <string name="str_en">English</string>
+    <string name="str_es">Español</string>
+    <string name="switch_mñn_tarde_registro_2">Mañana/Tarde</string>
+    <string name="title_activity_login">Entrar</string>
+    <string name="tv_apellidos_activity_registro">Apellidos:</string>
+    <string name="tv_bienvenido_registro_3">Bienvenido</string>
+    <string name="btn_cambiaidioma_activity_main">Cambiar idioma</string>
+    <string name="tv_comenzamos_registro_1">Comenzamos</string>
+    <string name="tv_cp_activity_registro">Código postal</string>
+    <string name="tv_direccion_activity_registro">Dirección</string>
+    <string name="tv_dondeeres_registro_2">De dónde eres?</string>
+    <string name="tv_horario_registro_2">Horario</string>
+    <string name="tv_nombre_activity_registro">Nombre:</string>
+    <string name="tv_nombreusu_registro_3">Nombre usuario</string>
+    <string name="tv_nousuarioaun_activity_main">No tienes cuenta?</string>
+    <string name="tv_poblacion_activity_registro">Población:</string>
+    <string name="tv_pw_activity_registro">Contraseña:</string>
+    <string name="tv_repitepw_activity_registro">Repite password</string>
+    <string name="tv_usuario_activity_registro">Usuario:</string>
+    <string name="tv_invitaramigos_activity_invitaramigos">Invita a tus amigos!!</string>
+
+
+</resources>

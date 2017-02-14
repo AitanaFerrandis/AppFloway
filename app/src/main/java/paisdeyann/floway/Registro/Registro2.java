@@ -33,13 +33,21 @@ public class Registro2 extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (poblacion.getText().toString().equals("") ||  cp.getText().toString().equals("") ){
+
                     Toast.makeText(Registro2.this, "Rellena todos los campos antes de continuar, por favor.", Toast.LENGTH_SHORT).show();
-                }else{
+
+                } else if (cp.getText().toString().length()<5 || cp.getText().toString().length()>5){
+
+                    Toast.makeText(Registro2.this, "El CP es incorrecto, introduzcalo de nuevo por favor.", Toast.LENGTH_SHORT).show();
+
+                } else{
 
                     guardaPreferencias();
                     Intent intent = new Intent(getApplicationContext(), Registro3.class);
                     startActivity(intent);
                     Toast.makeText(Registro2.this, "poblacion "+poblacion.getText().toString()+" cp "+cp.getText().toString(), Toast.LENGTH_SHORT).show();
+
+
                 }
             }
         });

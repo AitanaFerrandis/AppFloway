@@ -5,7 +5,7 @@
     android:background="@color/second_accent"
     android:paddingTop="20dp">
     <Button
-        android:text="IMAGEN"
+        android:text="@string/btn_img_registro_3"
         android:layout_width="match_parent"
         android:layout_above="@+id/ButtonContinuarTercerReg"
         android:layout_centerHorizontal="true"
@@ -18,7 +18,7 @@
         android:onClick="intentPicture"
         />
     <Button
-        android:text="EMPEZAR"
+        android:text="@string/btn_empezar_registro_3"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -37,7 +37,7 @@
         android:id="@+id/imageView2" />
 
     <TextView
-        android:text="Bienvenido"
+        android:text="@string/tv_bienvenido_registro_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textViewCom"
@@ -48,7 +48,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
     <TextView
-        android:text="dario"
+        android:text="@string/tv_nombreusu_registro_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textViewNombre"

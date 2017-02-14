@@ -1,5 +1,7 @@
 package paisdeyann.floway.Threads;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
@@ -25,8 +27,11 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 import paisdeyann.floway.Conexion.Conexion;
+import paisdeyann.floway.Menu_Principal;
+import paisdeyann.floway.Registro.Registro2;
 
 import static paisdeyann.floway.R.id.con;
+import static paisdeyann.floway.R.id.imageView;
 
 /**
  * Created by caboc on 08/02/2017.
@@ -34,6 +39,8 @@ import static paisdeyann.floway.R.id.con;
 
 public class InsertarUsuario extends AsyncTask<Object, Object, Object> {
 
+
+    private Object View;
 
     @Override
     protected Object doInBackground(Object... params) {
@@ -118,6 +125,15 @@ public class InsertarUsuario extends AsyncTask<Object, Object, Object> {
 
                 // print result
                 System.out.println(response.toString());
+
+                if (response.toString().equals("Usuario insertado")){
+
+                    ImageView v= (ImageView)parametros[9];
+                    Intent intent = new Intent(v.getContext(), Menu_Principal.class);
+                    v.getContext().startActivity(intent);
+                }
+
+
             } else {
                 System.out.println("POST request not worked");
             }

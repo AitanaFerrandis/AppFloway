@@ -4,7 +4,7 @@
     android:background="@color/accent"
     android:paddingTop="20dp">
     <Button
-        android:text="Continuar"
+        android:text="@string/btn_continuar_registro_2"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -15,7 +15,7 @@
         android:gravity="center" />
 
     <TextView
-        android:text="De donde eres?"
+        android:text="@string/tv_dondeeres_registro_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -34,7 +34,7 @@
         android:id="@+id/editPoblacion"
         android:layout_below="@+id/textViewCom"
         android:layout_centerHorizontal="true"
-        android:hint="Poblacion"
+        android:hint="@string/hint_editxt_poblacion_registro_2"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:background="@color/icons"
         android:layout_marginTop="16dp"
@@ -46,7 +46,7 @@
         android:inputType="textPersonName|number"
         android:ems="10"
         android:id="@+id/editCP"
-        android:hint="C.P"
+        android:hint="@string/hint_editxt_cp_registro_2"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:background="@color/icons"
         android:layout_marginTop="16dp"
@@ -65,7 +65,7 @@
 
 
         <TextView
-            android:text="Horario"
+            android:text="@string/tv_horario_registro_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView2"
@@ -74,7 +74,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
         <Switch
-            android:text="Mañana/Tarde"
+            android:text="@string/switch_mñn_tarde_registro_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/switch1"

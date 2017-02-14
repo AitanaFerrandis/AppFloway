@@ -23,5 +23,13 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_programa">Programa</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_invitar__amigos">Invitar_Amigos</string>
+    <string name="tv_invitaramigos_activity_invitaramigos">Invita a tus amigos!!</string>
+
+
+    <string name="toast_rellenadatos_activity_registro1">Rellena todos los campos antes de continuar, por favor.</string>
+
+
 
 </resources>
+

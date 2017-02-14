@@ -5,7 +5,7 @@
     android:background="@color/primary">
 
     <Button
-        android:text="Continuar"
+        android:text="@string/btn_continuar_registro_1"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -16,7 +16,7 @@
         android:gravity="center" />
 
     <TextView
-        android:text="Comenzamos"
+        android:text="@string/tv_comenzamos_registro_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -35,7 +35,7 @@
         android:id="@+id/editNombre"
         android:layout_below="@+id/textViewCom"
         android:layout_centerHorizontal="true"
-        android:hint="Nombre"
+        android:hint="@string/hint_editxt_nombre_registro_1"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:background="@color/icons"
         android:layout_marginTop="16dp"
@@ -49,7 +49,7 @@
         android:id="@+id/editApellidos"
         android:layout_below="@+id/editNombre"
         android:layout_alignParentStart="true"
-        android:hint="Apellidos"
+        android:hint="@string/hint_editxt_apellidos_registro_1"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:background="@color/icons"
         android:layout_marginTop="16dp"
@@ -63,7 +63,7 @@
         android:id="@+id/editUser"
         android:layout_below="@+id/editApellidos"
         android:layout_alignParentStart="true"
-        android:hint="Usuario"
+        android:hint="@string/hint_editxt_usuario_registro_1"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:background="@color/icons"
         android:layout_marginTop="16dp"
@@ -76,7 +76,7 @@
         android:ems="10"
         android:id="@+id/editTextPass"
         android:layout_below="@+id/editUser"
-        android:hint="Pass"
+        android:hint="@string/hint_editxt_contraseña_registro_1"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:background="@color/icons"
         android:layout_marginTop="16dp"
