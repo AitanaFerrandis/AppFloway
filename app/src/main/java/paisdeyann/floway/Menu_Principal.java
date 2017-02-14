@@ -47,7 +47,7 @@ public class Menu_Principal extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu__principal);
         map=new MapViewFragment();
-        map.setContext(getApplicationContext());
+        map.setContext(getApplicationContext(),this);
 
         //------Seccion Navigation---------------------------------------------------
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
