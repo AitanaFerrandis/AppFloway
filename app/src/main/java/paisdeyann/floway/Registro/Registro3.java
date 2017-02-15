@@ -1,7 +1,9 @@
 package paisdeyann.floway.Registro;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -28,16 +30,21 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 
+import paisdeyann.floway.MainActivity;
 import paisdeyann.floway.R;
 import paisdeyann.floway.Threads.InsertarUsuario;
 
 public class Registro3 extends AppCompatActivity {
     ImageView imageView;
     Button btnempezar;
+    Button botonBuscarFoto;
+    Registro3 activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registro_3);
+
+        activity = this;
 
         //extraemos el drawable en un bitmap
         Drawable originalDrawable = getResources().getDrawable(R.drawable.login);
@@ -64,12 +71,43 @@ public class Registro3 extends AppCompatActivity {
 
             }
         });
+        botonBuscarFoto = (Button) findViewById(R.id.ButtonBuscaFoto);
+        botonBuscarFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //imageView.setImageDrawable(null);
+                Log.d("prueba","paso por aki pero como si no");
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setMessage("Elige como quieres coger la foto").setTitle("coger foto");
+                builder.setPositiveButton("Camara", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+               Toast.makeText(getApplicationContext(), "HAS DADO CAMARA", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                if (intent.resolveActivity(getPackageManager()) != null) {
+
+                    startActivityForResult(intent,1);
+
+                }
+                    }
+                }).setNegativeButton("Galeria", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        Toast.makeText(getApplicationContext(), "HAS DADO GALERIA", Toast.LENGTH_SHORT).show();
+                        Crop.pickImage(activity);
+                    }
+                });
+                builder.create().show();
+
+
+            }
+        });
 
     }
 
     public void intentPicture(View v){
-        //imageView.setImageDrawable(null);
-        Crop.pickImage(this);
+
 
     }
     public void roundImage(){
@@ -97,6 +135,21 @@ public class Registro3 extends AppCompatActivity {
         } else if (requestCode == Crop.REQUEST_CROP) {
             handleCrop(resultCode, result);
         }
+
+        if(requestCode == 1){
+            Toast.makeText(getApplicationContext(), "vuelvo", Toast.LENGTH_SHORT).show();
+            Bitmap fotoEnviar = (Bitmap) result.getExtras().get("data");
+
+
+            RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), fotoEnviar);
+
+            //asignamos el CornerRadius
+            roundedDrawable.setCornerRadius(fotoEnviar.getHeight());
+
+
+            imageView.setImageDrawable(roundedDrawable);
+        }
+
     }
 
     private void beginCrop(Uri source) {

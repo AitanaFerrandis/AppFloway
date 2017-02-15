@@ -14,9 +14,7 @@
         android:layout_height="50dp"
         android:background="@color/second_accent_dark"
         android:gravity="center"
-        android:layout_marginBottom="16dp"
-        android:onClick="intentPicture"
-        />
+        android:layout_marginBottom="16dp" />
     <Button
         android:text="@string/btn_empezar_registro_3"
         android:layout_width="match_parent"
