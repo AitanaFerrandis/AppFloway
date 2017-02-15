@@ -1,8 +1,13 @@
 package paisdeyann.floway.Threads;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.AsyncTask;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -28,6 +33,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import paisdeyann.floway.Conexion.Conexion;
 import paisdeyann.floway.Menu_Principal;
+import paisdeyann.floway.R;
 import paisdeyann.floway.Registro.Registro2;
 
 import static paisdeyann.floway.R.id.con;
@@ -129,6 +135,24 @@ public class InsertarUsuario extends AsyncTask<Object, Object, Object> {
                 if (response.toString().equals("Usuario insertado")){
 
                     ImageView v= (ImageView)parametros[9];
+
+                    Intent resultIntent = new Intent(v.getContext(), Menu_Principal.class);
+                    PendingIntent resultPendingIntent = PendingIntent.getActivity(v.getContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    NotificationCompat.Builder mBuilder =
+                            (NotificationCompat.Builder) new NotificationCompat.Builder(v.getContext()).setSmallIcon(R.drawable.text)
+                                    .setContentTitle("BIENVENIDO")
+                                    .setContentText("Ya estás registrado")
+                                    .setLights(0xff00ff00, 300, 100)
+                                    .setVibrate(new long[] {1000, 2000, 3000, 4000, 5000 })
+                                    .setLargeIcon(BitmapFactory.decodeResource(v.getContext().getResources(), R.drawable.text));
+                    mBuilder.setContentIntent(resultPendingIntent);
+
+                    NotificationManager mNotificationManager = (NotificationManager) v.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    mNotificationManager.notify(1, mBuilder.build());
+
+
+
                     Intent intent = new Intent(v.getContext(), Menu_Principal.class);
                     v.getContext().startActivity(intent);
                 }
@@ -152,6 +176,7 @@ public class InsertarUsuario extends AsyncTask<Object, Object, Object> {
 
 
     }
+
 
 
 }
