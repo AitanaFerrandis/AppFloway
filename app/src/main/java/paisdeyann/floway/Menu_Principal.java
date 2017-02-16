@@ -3,6 +3,7 @@ package paisdeyann.floway;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,14 +24,24 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import paisdeyann.floway.Conexion.Conexion;
 import paisdeyann.floway.FragmentsTabs.MapViewFragment;
 import paisdeyann.floway.FragmentsTabs.PantallaChat;
 import paisdeyann.floway.FragmentsTabs.PantallaTransacciones;
+import paisdeyann.floway.Objetos.Conversacion;
 
 
 public class Menu_Principal extends AppCompatActivity
@@ -42,12 +53,55 @@ public class Menu_Principal extends AppCompatActivity
     MapViewFragment map;
     int positionAnt=0;
     boolean pasCon = false;
+
+
+
+    ArrayList<Conversacion> conversaciones = new ArrayList<Conversacion>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu__principal);
         map=new MapViewFragment();
         map.setContext(getApplicationContext(),this);
+        //------ArrayMensajes------------------------------------------------------
+
+        DatabaseReference conversacionesBBDD = FirebaseDatabase.getInstance().getReference().child("Conversaciones");
+
+
+        conversacionesBBDD.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                Iterator i = dataSnapshot.getChildren().iterator();
+
+                while (i.hasNext()){
+
+                    Conversacion c = ((DataSnapshot) i.next()).getValue(Conversacion.class);
+                    Log.d("prueba","estoy al principio "+c.getChat()+" "+c.getId1()+" "+c.getId2());
+
+
+
+                    if(Conexion.usuarioActivo.getId_usuario() == c.getId1() || Conexion.usuarioActivo.getId_usuario() == c.getId2()){
+
+                        Log.d("prueba","añado una conversacion");
+                        conversaciones.add(c);
+
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
 
         //------Seccion Navigation---------------------------------------------------
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -162,6 +216,21 @@ public class Menu_Principal extends AppCompatActivity
 
 
     }
+
+
+    /* getters y setters array mensajes --*/
+    public ArrayList<Conversacion> getConversaciones() {
+        return conversaciones;
+    }
+
+    public void setConversaciones(ArrayList<Conversacion> conversaciones) {
+        this.conversaciones = conversaciones;
+    }
+
+    public void addConversacion(Conversacion c){
+        conversaciones.add(c);
+    }
+    /* hasta aki --*/
 
     //animaciones
     public void muestraBoton(){

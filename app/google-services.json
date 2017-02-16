@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "857305556201",
+    "firebase_url": "https://flowaychatviajes.firebaseio.com",
+    "project_id": "flowaychatviajes",
+    "storage_bucket": "flowaychatviajes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:857305556201:android:f4fe1615d309b239",
+        "android_client_info": {
+          "package_name": "paisdeyann.floway"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "857305556201-i7hjd1urb1gj8iopal11pf66bgftogpp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQAA6vCqWQmJLoWYJTs4KkEfYyi0y6f-I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
