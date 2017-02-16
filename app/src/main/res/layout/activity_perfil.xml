@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/second_accent">
+    <Button
+        android:text="@string/btn_img_registro_3"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/ButtonContinuarTercerReg"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/ButtonBuscaFoto"
+        android:elevation="10dp"
+        android:layout_height="50dp"
+        android:background="@color/second_accent_dark"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp" />
+    <Button
+        android:text="@string/btn_empezar_registro_3"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/ButtonContinuarTercerReg"
+        android:elevation="10dp"
+        android:layout_height="50dp"
+        android:background="@color/second_accent_dark"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        app:srcCompat="@color/accent"
+        android:id="@+id/imageView3"
+        android:layout_height="200dp" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:srcCompat="@color/second_accent_dark"
+        android:id="@+id/imageView2"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

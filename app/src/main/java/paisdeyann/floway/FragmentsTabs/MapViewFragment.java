@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,22 +71,26 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
     MapViewFragment esteActivity;
     LocationManager locationManager;
     Menu_Principal activity;
-
+    ProgressBar mProgressBar;
     double radio = 10;
     int conductor = 1;
-    int conectado = 1;
+    public int conectado = 1;
 
     //Listener de la ubicacion
     LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(final Location location) {
-            tuLatitud = location.getLatitude();
-            tuLongitud = location.getLongitude();
-            zoom();
-            pintaUsuarios(tuLatitud,tuLongitud,radio,conductor,conectado);
+
+           if(conectado==1) {
+               tuLatitud = location.getLatitude();
+               tuLongitud = location.getLongitude();
+               zoom();
+
+               pintaUsuarios(tuLatitud, tuLongitud, radio, conductor, conectado);
 
 
-            Log.v("syso","latitud y longitud "+tuLatitud+" , "+tuLongitud);
+               Log.v("syso", "latitud y longitud " + tuLatitud + " , " + tuLongitud);
+           }
         }
 
         @Override
@@ -110,15 +116,26 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
 
         mMapView.onResume(); // needed to get the map to display immediate
 
-        Button reload = (Button) rootView.findViewById(R.id.button5);
 
-        reload.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              zoom();
-              pintaUsuarios(tuLatitud,tuLongitud,radio,conductor,conectado);
-          }
-      });
+        mProgressBar = (ProgressBar)  rootView.findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(View.VISIBLE);
+        ImageView mRefreshImageView = (ImageView)  rootView.findViewById(R.id.refreshImageView);
+        mRefreshImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(conectado==1) {
+                    getUbicacion();
+                    getLastUbic();
+                    zoom();
+                    pintaUsuarios(tuLatitud,tuLongitud,radio,conductor,conectado);}
+    else {
+        Toast.makeText(activity, "Estas desconectado, conectate para realizar esta acción", Toast.LENGTH_SHORT).show();
+        }
+
+            }
+        });
+
+
 
 
 
@@ -132,14 +149,16 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
             @Override
             public void onMapReady(GoogleMap mMap) {
                 mgoogleMap = mMap;
-                addInfo();
-                getUbicacion();
-                setMarkersPasajeros();
-                zoom();
-                pintaUsuarios(tuLatitud,tuLongitud,radio,conductor,conectado);
-
-
+               if(!isLocationEnabled()){
+                    activeGPS();
+                }else {
+                   getUbicacion();
+                   getLastUbic();
+                   zoom();
+                   pintaUsuarios(tuLatitud, tuLongitud, radio, conductor, conectado);
+               }
             }
+
         });
 
 
@@ -154,6 +173,20 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
         activity = me;
     }
 
+    public void getLastUbic(){
+        if(checkLocationPermission()){
+
+            locationManager = (LocationManager) activity.getSystemService(LOCATION_SERVICE);
+        locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, mLocationListener, null);
+        Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+       if(loc!=null) {
+           tuLatitud = loc.getLatitude();
+           tuLongitud = loc.getLongitude();
+       }
+            Log.v("syso","Las nuevas ubicaciones son:"+ tuLatitud+" , "+tuLongitud);
+        }
+    }
+
     public void getUbicacion(){
 
         long minTime=10;
@@ -164,6 +197,7 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, mLocationListener);
         }
     }
+
 
     public boolean checkLocationPermission()
     {
@@ -185,6 +219,7 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
         {
             if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
             {
+
             }
 
             return true;
@@ -199,9 +234,8 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
             return true;
         }
     }
-    public void setMarkersPasajeros(){
+    public void activeGPS(){
 
-        if(!isLocationEnabled()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle("Activa la ubicacion")
                     .setMessage("")
@@ -220,7 +254,7 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
                             });
             AlertDialog alert = builder.create();
             alert.show();
-        }
+
         //mgoogleMap.clear();
 
     }
@@ -229,13 +263,53 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
         // For dropping a marker at a point on the Map
         LatLng marker = new LatLng(this.tuLatitud, this.tuLongitud);
 
-
         // For zooming automatically to the location of the marker
         CameraPosition cameraPosition = new CameraPosition.Builder().target(marker).zoom(12).build();
         mgoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
+    public void pintaPasajeros(){
+        conductor=1;
+        if(conectado==1) {
+        getLastUbic();
+
+            pintaUsuarios(tuLatitud, tuLongitud, radio, conductor, conectado);}
+        else {
+            Toast.makeText(activity, "Estas desconectado, conectate para realizar esta acción", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void pintaConductores(){
+
+        conductor=0;
+        if(conectado==1) {
+        getLastUbic();
+
+            pintaUsuarios(tuLatitud, tuLongitud, radio, conductor, conectado);}
+        else {
+            Toast.makeText(activity, "Estas desconectado, conectate para realizar esta acción", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void conecta(){
+        mgoogleMap.clear();
+        conectado=1;
+        if(conductor==0){
+            pintaConductores();
+        }else {
+            pintaPasajeros();
+        }
+
+        //falta lanzar la peticion para aparecer como desconectado en la api
+    }
+    public void desconecta(){
+        mgoogleMap.clear();
+        conectado=0;
+        //falta lanzar la peticion para aparecer como desconectado en la api
+
+
+    }
 
     public void pintaUsuarios(double la,double lo,double ra,int con, int pas){
+        if(conectado==1) {
         mgoogleMap.clear();
         ConseguirUsuariosPorRadio c = new ConseguirUsuariosPorRadio();
         Object[] objetos = new Object[6];
@@ -245,7 +319,10 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
         objetos[3] = con;             // conductor    int 1 conductor 0 pasajero
         objetos[4] = pas;             // conectado    int 1 conectado 0 desconectado
         objetos[5] = esteActivity;
-        c.execute(objetos);
+        c.execute(objetos);}
+        else {
+            Toast.makeText(activity, "Estas desconectado, conectate para realizar esta acción", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -255,37 +332,18 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
         MarkerOptions markerMaps = new MarkerOptions()
                 .position(marker2)
                 .title(titulo)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.android_pasajero))
                 .snippet(descripcion);
+        if(conductor==1){
+
+        markerMaps.icon(BitmapDescriptorFactory.fromResource(R.drawable.pasajero_android));
+        }else {
+         markerMaps.icon(BitmapDescriptorFactory.fromResource(R.drawable.coche));
+        }
 
         mgoogleMap.addMarker(markerMaps);
         mgoogleMap.setOnMarkerClickListener(this);
     }
 
-    public void addInfo(){
-        final LayoutInflater inflater = (LayoutInflater) activity.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-
-        if (mgoogleMap != null) {
-            mgoogleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-                @Override
-                public View getInfoWindow(Marker marker) {
-                    return null;
-                }
-
-                @Override
-                public View getInfoContents(Marker marker) {
-                    View v = inflater.inflate(R.layout.info_google_window, null);
-                    ImageView imag = (ImageView) v.findViewById(R.id.imageView1);
-                    TextView nom = (TextView) v.findViewById(R.id.tv_locality);
-                    TextView lat = (TextView) v.findViewById(R.id.tv_lat);
-                    TextView lon = (TextView) v.findViewById(R.id.tv_lng);
-                    Button btn = (Button) v.findViewById(R.id.button4);
-                    return null;
-                }
-            });
-
-        }
-    }
 
 
     //-----------------------------PURRIA---------------------------------------------------------
@@ -296,7 +354,6 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     @Override

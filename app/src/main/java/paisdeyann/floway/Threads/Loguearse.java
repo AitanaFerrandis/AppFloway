@@ -46,7 +46,10 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
 
     @Override
 
-    protected void onPreExecute() {  }
+    protected void onPreExecute() {
+
+
+    }
 
 
     @Override

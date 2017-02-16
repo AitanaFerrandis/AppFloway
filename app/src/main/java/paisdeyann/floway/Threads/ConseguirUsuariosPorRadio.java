@@ -27,11 +27,8 @@ import paisdeyann.floway.Objetos.Usuario;
 
 public class ConseguirUsuariosPorRadio extends AsyncTask<Object, Object, TextView> {
 
-
     @Override
     protected TextView doInBackground(Object... params) {
-
-
 
         double radio = (Double)params[0];
 
@@ -58,6 +55,8 @@ public class ConseguirUsuariosPorRadio extends AsyncTask<Object, Object, TextVie
 
     @Override
     protected void onPreExecute() {
+
+
         super.onPreExecute();
     }
 
@@ -94,9 +93,7 @@ public class ConseguirUsuariosPorRadio extends AsyncTask<Object, Object, TextVie
         }
 
 
-
-
-    }
+}
 
     @Override
     protected void onCancelled(TextView textView) {
