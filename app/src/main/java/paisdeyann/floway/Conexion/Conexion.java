@@ -5,6 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.View;
 
+import paisdeyann.floway.Objetos.Usuario;
+
 /**
  * Created by caboc on 20/01/2017.
  */
@@ -16,6 +18,8 @@ public class Conexion {
     public static final String SERVER = "http://54.93.101.246";
 
     public static final String APIKEY="api_key=HDRYsemQRQRPRT";
+
+    public static Usuario usuarioActivo;
 
 
 
