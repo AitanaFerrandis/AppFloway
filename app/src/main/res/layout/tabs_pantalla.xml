@@ -71,14 +71,13 @@
             android:layout_height="wrap_content"
             android:src="@drawable/desconectar"
             fab:fab_colorNormal="@color/white"
-            fab:fab_title="Desconectar"
             fab:fab_colorPressed="@color/white_pressed" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/boton_b"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/android_pasajero"
+            android:background="@drawable/pasajero_android"
             fab:fab_colorNormal="@color/second_accent_dark"
             fab:fab_colorPressed="@color/white_pressed"/>
     </com.getbase.floatingactionbutton.FloatingActionsMenu>

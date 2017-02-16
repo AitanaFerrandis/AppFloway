@@ -53,7 +53,10 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
 
     @Override
 
-    protected void onPreExecute() {  }
+    protected void onPreExecute() {
+
+
+    }
 
 
     @Override
@@ -197,6 +200,9 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
                             if (usuario.getPassword().equals(passwordComprobar)) {
                                 Log.d("prueba", "logueado");
                                 // Log.d("prueba","nombre"+usuario.getNombre()+" apellido "+usuario.getApellidos()+" pass "+usuario.getPassword()+" usuario "+usuario.getUsuario()+" id "+usuario.getId_usuario()+" cp "+usuario.getCp()+" horario "+usuario.getHorario()+" poblacion "+usuario.getPoblacion()+" puntuacion "+usuario.getPuntuacion()+" foto "+usuario.getFoto());
+
+                                Conexion.usuarioActivo = usuario;
+
                                 logueado = "true";
 
                                 Object[] objetos = new Object[1];

@@ -27,11 +27,8 @@ import paisdeyann.floway.Objetos.Usuario;
 
 public class ConseguirUsuariosPorRadio extends AsyncTask<Object, Object, TextView> {
 
-
     @Override
     protected TextView doInBackground(Object... params) {
-
-
 
         double radio = (Double)params[0];
 
@@ -58,6 +55,8 @@ public class ConseguirUsuariosPorRadio extends AsyncTask<Object, Object, TextVie
 
     @Override
     protected void onPreExecute() {
+
+
         super.onPreExecute();
     }
 
@@ -89,14 +88,12 @@ public class ConseguirUsuariosPorRadio extends AsyncTask<Object, Object, TextVie
             fragmentMapa.addUsuario(usuario);
             //public void insertMarca(double latitud, double longitud, String titulo, String descripcion)
 
-            fragmentMapa.insertMarca(usuario.getLatitud(),usuario.getLongitud(),usuario.getNombre()+" "+usuario.getApellidos(),usuario.getPoblacion());
+            fragmentMapa.insertMarca(usuario.getLatitud(),usuario.getLongitud(),usuario.getNombre()+" "+usuario.getApellidos(),usuario.getId_usuario());
 
         }
 
 
-
-
-    }
+}
 
     @Override
     protected void onCancelled(TextView textView) {
@@ -110,6 +107,7 @@ public class ConseguirUsuariosPorRadio extends AsyncTask<Object, Object, TextVie
         String respuesta="";
         Log.d("prueba","llego a conseguir usuarios");
 
+        
         try {
             String cadenaConexion = Conexion.SERVER+"/APIFLOWAY-PHP/apiNueva.php?conectado="+(int)objetos[4]+"&conductor="+(int)objetos[3]+"&radio="+(double)objetos[0]+"&longitud="+(double)objetos[2]+"&latitud="+(double)objetos[1]+"&"+ Conexion.APIKEY;
            // String cadenaConexion = Conexion.SERVER+"/APIFLOWAY-PHP/apiNueva.php?conectado=1&conductor=1&radio=5&longitud=-0.533108&latitud=39.590381&"+ Conexion.APIKEY;
