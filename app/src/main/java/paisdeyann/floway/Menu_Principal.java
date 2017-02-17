@@ -345,6 +345,9 @@ public class Menu_Principal extends AppCompatActivity
 
         } else if (id == R.id.puntuacion) {
 
+            Intent intent = new Intent(getApplicationContext(), PuntuacionActivity.class);
+            startActivity(intent);
+
         } else if (id == R.id.publicaciones) {
 
         } else if (id == R.id.invita) {
