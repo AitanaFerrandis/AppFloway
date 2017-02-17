@@ -32,5 +32,9 @@
     <color name="pink_pressed">#ec407a</color>
     <color name="blue_semi_transparent">#805677fc</color>
     <color name="blue_semi_transparent_pressed">#80738ffe</color>
+    <color name="item_message_chat_emite">#DCF8C6</color>
+    <color name="item_message_chat_recibe">#E9EBEB</color>
+
+
 
 </resources>

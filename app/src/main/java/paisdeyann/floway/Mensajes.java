@@ -47,13 +47,15 @@ public class Mensajes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mensajes);
 
+        Log.d("prueba","llego a mensajes");
+
         mId = Settings.Secure.getString(this.getContentResolver(),Settings.Secure.ANDROID_ID);
       //  Log.d("prueba","el mid es :"+mId);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
         String chat = getIntent().getBundleExtra("bundle").getString("chat");
-        Log.d("prueba","el chat es: ");
+        //Log.d("prueba","el chat es: ");
 
 
 
@@ -73,11 +75,13 @@ public class Mensajes extends AppCompatActivity {
         añadirMensaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // creara una instacia hacia firebase insertando el mensaje sobre la clave del autor (email)
-                Mensaje mensaje = new Mensaje(editTextMensajes.getText().toString(), ""+new Timestamp(System.currentTimeMillis()), Conexion.usuarioActivo.getId_usuario());
-                mFirebase.push().setValue(mensaje);
-                // vaciar texto
-
+                if(!editTextMensajes.getText().toString().equals("")) {
+                    // creara una instacia hacia firebase insertando el mensaje sobre la clave del autor (email)
+                    Mensaje mensaje = new Mensaje(editTextMensajes.getText().toString(), "" + new Timestamp(System.currentTimeMillis()), Conexion.usuarioActivo.getId_usuario());
+                    mFirebase.push().setValue(mensaje);
+                    // vaciar texto
+                    editTextMensajes.setText("");
+                }
             }
         });
 

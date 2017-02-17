@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -419,11 +420,19 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
                     myRefChat.child(mensaje+"chat").child("nombre2").setValue(marker.getTitle());
 
                     //FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    /*
                     DatabaseReference myRefChat2 = database.getReference("Conversaciones");
                     myRefChat2.child(mensaje+"conversacion").child("id1").setValue(Integer.parseInt(idMarca));
                     myRefChat2.child(mensaje+"conversacion").child("id2").setValue(Conexion.usuarioActivo.getId_usuario());
                     myRefChat2.child(mensaje+"conversacion").child("chat").setValue(mensaje+"chat");
                     myRefChat2.child(mensaje+"conversacion").child("fecha").setValue(""+timestamp);
+                    */
+
+                    Firebase mFirebase;
+                    mFirebase = new Firebase("https://flowaychatviajes.firebaseio.com").child("Conversaciones");
+
+                    Conversacion conversacion = new Conversacion(Integer.parseInt(idMarca),Conexion.usuarioActivo.getId_usuario(),mensaje+"chat",""+timestamp);
+                    mFirebase.push().setValue(conversacion);
 
                     Bundle bundle = new Bundle();
                     bundle.putString("chat",mensaje+"chat");
