@@ -52,6 +52,7 @@ import paisdeyann.floway.Menu_Principal;
 import paisdeyann.floway.Objetos.Conversacion;
 import paisdeyann.floway.Objetos.Usuario;
 import paisdeyann.floway.R;
+import paisdeyann.floway.Threads.CambiaUbic;
 import paisdeyann.floway.Threads.ConseguirUsuariosPorRadio;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -112,6 +113,15 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
                zoom();
 
                pintaUsuarios(tuLatitud, tuLongitud, radio, conductor, conectado);
+
+               //String POST_PARAMS = "olduser=" + objetos[0] + "&longitud=" + objetos[1] + "&latitud=" + objetos[2];
+               CambiaUbic c = new CambiaUbic();
+               Object[] objetos = new Object[2];
+               objetos[0] = Conexion.usuarioActivo.getId_usuario();      // radio   double
+               objetos[1] = tuLongitud;       // latitud  atributo clase principal  double
+               objetos[2] = tuLatitud;     //longitud   atributo clase principal   double
+               c.execute(objetos);
+
 
 
                Log.v("syso", "latitud y longitud " + tuLatitud + " , " + tuLongitud);
@@ -323,6 +333,7 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
     public void desconecta(){
         mgoogleMap.clear();
         conectado=0;
+
         //falta lanzar la peticion para aparecer como desconectado en la api
 
 
