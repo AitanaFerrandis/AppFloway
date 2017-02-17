@@ -1,7 +1,11 @@
 package paisdeyann.floway;
 
+
+
 import android.content.Intent;
+
 import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
@@ -48,18 +52,23 @@ import paisdeyann.floway.Objetos.Conversacion;
 
 
 public class Menu_Principal extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PantallaTransacciones.OnFragmentInteractionListener, PantallaChat.OnFragmentInteractionListener{
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     FloatingActionsMenu menuMultipleActions;
     MapViewFragment map;
+    PantallaChat chat;
+    PantallaTransacciones transacciones;
     int positionAnt=0;
     boolean pasCon = false;
 
 
 
+
     ArrayList<Conversacion> conversaciones = new ArrayList<Conversacion>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +76,13 @@ public class Menu_Principal extends AppCompatActivity
         setContentView(R.layout.activity_menu__principal);
         map=new MapViewFragment();
         map.setContext(getApplicationContext(),this);
+
+
+
+        chat = new PantallaChat();
+        chat.setContext(getApplicationContext(),this);
+
+        transacciones = new PantallaTransacciones();
         //------ArrayMensajes------------------------------------------------------
 
         DatabaseReference conversacionesBBDD = FirebaseDatabase.getInstance().getReference().child("Conversaciones");
@@ -82,18 +98,19 @@ public class Menu_Principal extends AppCompatActivity
                 while (i.hasNext()){
 
                     Conversacion c = ((DataSnapshot) i.next()).getValue(Conversacion.class);
-                    Log.d("prueba","estoy al principio "+c.getChat()+" "+c.getId1()+" "+c.getId2());
+                   // Log.d("prueba","estoy al principio "+c.getChat()+" "+c.getId1()+" "+c.getId2());
 
 
 
                     if(Conexion.usuarioActivo.getId_usuario() == c.getId1() || Conexion.usuarioActivo.getId_usuario() == c.getId2()){
 
-                        Log.d("prueba","añado una conversacion");
+
                         conversaciones.add(c);
 
                     }
 
                 }
+
 
             }
 
@@ -134,8 +151,8 @@ public class Menu_Principal extends AppCompatActivity
                 R.drawable.coche,
                 R.drawable.monedero
         };
-        tabLayout.getTabAt(0).setIcon(ICONS[0]);
-        tabLayout.getTabAt(1).setIcon(ICONS[1]);
+        tabLayout.getTabAt(0).setIcon(ICONS[1]);
+        tabLayout.getTabAt(1).setIcon(ICONS[0]);
         tabLayout.getTabAt(2).setIcon(ICONS[2]);
 
 
@@ -155,7 +172,7 @@ public class Menu_Principal extends AppCompatActivity
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
-                    case 1:
+                    case 0:
                         muestraBoton();
                         positionAnt = position;
                         break;
@@ -238,11 +255,25 @@ public class Menu_Principal extends AppCompatActivity
 
 
         menuMultipleActions.addButton(actionC);
-        menuMultipleActions.setVisibility(View.INVISIBLE);
+
 
 
     }
 
+    public Menu_Principal() {
+        super();
+    }
+
+    //esto no se para que sirve pero no hay que tocarlo
+    @Override
+    public void onNavFragmentInteraction(String string) {
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 
     /* getters y setters array mensajes --*/
     public ArrayList<Conversacion> getConversaciones() {
@@ -331,40 +362,6 @@ public class Menu_Principal extends AppCompatActivity
         return true;
     }
 
-    //metodo donde se gestionan los fragments que van dentro de cada tab
-    public static class PlaceholderFragment extends Fragment {
-
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-        //aqui se añaden las vistas a cada tab
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
-                case 1:
-                    View rootView = inflater.inflate(R.layout.fragment_pantalla_chat, container, false);
-                    return rootView;
-                case 3:
-                    View rootView3= inflater.inflate(R.layout.fragment_pantalla_transacciones, container, false);
-                    return rootView3;
-            }
-            return null;
-        }
-
-
-
-    }
 
     //metodo para gestionar los tabs, no tocar nada de aqui
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -380,16 +377,21 @@ public class Menu_Principal extends AppCompatActivity
 
             switch (position) {
                 case 1:
+                    fragment = chat;
+                    return fragment;
+                case 0:
                     fragment = map;
+                    return fragment;
+                case 2:
+                    fragment = transacciones;
                     return fragment;
             }
 
-                return PlaceholderFragment.newInstance(position + 1);
+                return fragment;
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 3;
         }
 

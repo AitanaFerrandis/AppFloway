@@ -45,9 +45,6 @@ public class Registro2 extends AppCompatActivity {
                     guardaPreferencias();
                     Intent intent = new Intent(getApplicationContext(), Registro3.class);
                     startActivity(intent);
-                    Toast.makeText(Registro2.this, "poblacion "+poblacion.getText().toString()+" cp "+cp.getText().toString(), Toast.LENGTH_SHORT).show();
-
-
                 }
             }
         });

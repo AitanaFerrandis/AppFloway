@@ -10,7 +10,9 @@ public class Conversacion {
     String chat;
     String fecha;
 
-    public Conversacion(){}
+    public Conversacion(){
+
+    }
 
 
 
