@@ -73,16 +73,16 @@ public class DesconectarseCambiarPasajero extends AsyncTask<Object, Object, Text
     }
 
     public String cambiarEstado(Object[] objetos) {
-        String cadenaConexion = Conexion.SERVER + "/APIFLOWAY-PHP/apiNueva.php" + "?" + Conexion.APIKEY;
+        String cadenaConexion = Conexion.SERVER + "/APIFLOWAY-PHP/apiNueva.php" + "?" + Conexion.APIKEY+"&conductor=g";
 
 
-        String POST_PARAMS = "olduser=" + objetos[0] + "&conectado=" + objetos[1] + "&conductor=" + objetos[2] ;
+        String POST_PARAMS = "olduser=" + objetos[0] + "&conductor=" + objetos[1];
 
         URL obj = null;
         try {
             obj = new URL(cadenaConexion);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setRequestMethod("POST");
+            con.setRequestMethod("PUT");
             con.setDoOutput(true);
 
 

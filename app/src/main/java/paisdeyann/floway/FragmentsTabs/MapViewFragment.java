@@ -55,6 +55,8 @@ import paisdeyann.floway.Objetos.Usuario;
 import paisdeyann.floway.R;
 import paisdeyann.floway.Threads.CambiaUbic;
 import paisdeyann.floway.Threads.ConseguirUsuariosPorRadio;
+import paisdeyann.floway.Threads.Desconecta;
+import paisdeyann.floway.Threads.DesconectarseCambiarPasajero;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -117,7 +119,7 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
 
                //String POST_PARAMS = "olduser=" + objetos[0] + "&longitud=" + objetos[1] + "&latitud=" + objetos[2];
                CambiaUbic c = new CambiaUbic();
-               Object[] objetos = new Object[2];
+               Object[] objetos = new Object[3];
                objetos[0] = Conexion.usuarioActivo.getId_usuario();      // radio   double
                objetos[1] = tuLongitud;       // latitud  atributo clase principal  double
                objetos[2] = tuLatitud;     //longitud   atributo clase principal   double
@@ -323,6 +325,14 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
     public void conecta(){
         mgoogleMap.clear();
         conectado=1;
+
+
+        Desconecta d = new Desconecta();
+        Object[] objetos1 = new Object[2];
+        objetos1[0] = Conexion.usuarioActivo.getId_usuario();
+        objetos1[1] = conectado;
+        d.execute(objetos1);
+
         if(conductor==0){
             pintaConductores();
         }else {
@@ -335,6 +345,14 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
         mgoogleMap.clear();
         conectado=0;
 
+
+        Desconecta d = new Desconecta();
+        Object[] objetos1 = new Object[2];
+        objetos1[0] = Conexion.usuarioActivo.getId_usuario();
+        objetos1[1] = conectado;
+        d.execute(objetos1);
+
+
         //falta lanzar la peticion para aparecer como desconectado en la api
 
 
@@ -343,15 +361,25 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
     public void pintaUsuarios(double la,double lo,double ra,int con, int pas){
         if(conectado==1) {
         mgoogleMap.clear();
-        ConseguirUsuariosPorRadio c = new ConseguirUsuariosPorRadio();
-        Object[] objetos = new Object[6];
-        objetos[0] = ra;      // radio   double
-        objetos[1] = la;       // latitud  atributo clase principal  double
-        objetos[2] = lo;     //longitud   atributo clase principal   double
-        objetos[3] = con;             // conductor    int 1 conductor 0 pasajero
-        objetos[4] = pas;             // conectado    int 1 conectado 0 desconectado
-        objetos[5] = esteActivity;
-        c.execute(objetos);}
+        //cambia tu situacion
+            //  String POST_PARAMS = "olduser=" + objetos[0] + "&conectado=" + objetos[1] + "&conductor=" + objetos[2] ;
+            DesconectarseCambiarPasajero d = new DesconectarseCambiarPasajero();
+            Object[] objetos1 = new Object[2];
+            objetos1[0] = Conexion.usuarioActivo.getId_usuario();
+            objetos1[1] = conductor;
+            d.execute(objetos1);
+
+
+
+            ConseguirUsuariosPorRadio c = new ConseguirUsuariosPorRadio();
+            Object[] objetos = new Object[6];
+            objetos[0] = ra;      // radio   double
+            objetos[1] = la;       // latitud  atributo clase principal  double
+            objetos[2] = lo;     //longitud   atributo clase principal   double
+            objetos[3] = con;             // conductor    int 1 conductor 0 pasajero
+            objetos[4] = pas;             // conectado    int 1 conectado 0 desconectado
+            objetos[5] = esteActivity;
+            c.execute(objetos);}
         else {
             Toast.makeText(activity, "Estas desconectado, conectate para realizar esta acción", Toast.LENGTH_SHORT).show();
         }
@@ -365,7 +393,7 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
                 .position(marker2)
                 .title(titulo)
                 .snippet("id:"+id);
-        if(conductor==1){
+        if(conductor==0){
 
         markerMaps.icon(BitmapDescriptorFactory.fromResource(R.drawable.pasajero_android));
         }else {

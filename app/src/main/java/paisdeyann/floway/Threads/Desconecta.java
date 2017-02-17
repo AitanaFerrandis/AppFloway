@@ -15,14 +15,14 @@ import java.net.URL;
 import paisdeyann.floway.Conexion.Conexion;
 
 /**
- * Created by Dario on 16/02/2017.
+ * Created by Dario on 17/02/2017.
  */
 
-public class CambiaUbic extends AsyncTask<Object, Object, TextView> {
+public class Desconecta extends AsyncTask<Object, Object, TextView> {
 
     @Override
     protected TextView doInBackground(Object... params) {
-        //String POST_PARAMS = "olduser=" + objetos[0] + "&longitud=" + objetos[1] + "&latitud=" + objetos[2];
+        //  String POST_PARAMS = "olduser=" + objetos[0] + "&conectado=" + objetos[1] + "&conductor=" + objetos[2] ;
         String respuesta =  cambiarEstado(params);
 
         return null;
@@ -54,10 +54,10 @@ public class CambiaUbic extends AsyncTask<Object, Object, TextView> {
     }
 
     public String cambiarEstado(Object[] objetos) {
-        String cadenaConexion = Conexion.SERVER + "/APIFLOWAY-PHP/apiNueva.php" + "?" + Conexion.APIKEY+"&cambiarlocalizacion=f";
+        String cadenaConexion = Conexion.SERVER + "/APIFLOWAY-PHP/apiNueva.php" + "?" + Conexion.APIKEY+"&conectado=f";
 
 
-        String POST_PARAMS = "olduser=" + objetos[0] + "&longitud=" + objetos[1] + "&latitud=" + objetos[2];
+        String POST_PARAMS = "olduser=" + objetos[0] + "&conectado=" + objetos[1];
 
         URL obj = null;
         try {
@@ -99,5 +99,6 @@ public class CambiaUbic extends AsyncTask<Object, Object, TextView> {
         return "";
     }
 
-
 }
+
+
