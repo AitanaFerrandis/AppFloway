@@ -2,14 +2,21 @@ package paisdeyann.floway.Threads;
 import paisdeyann.floway.Conexion.Conexion;
 import paisdeyann.floway.Menu_Principal;
 import paisdeyann.floway.Objetos.Usuario;
+import paisdeyann.floway.R;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -46,7 +53,10 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
 
     @Override
 
-    protected void onPreExecute() {  }
+    protected void onPreExecute() {
+
+
+    }
 
 
     @Override
@@ -76,7 +86,6 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
     protected void onPostExecute(TextView t) {
         if(logueado.equals("true")) {
             Toast.makeText(contexto, "Logueado", Toast.LENGTH_SHORT).show();
-
             Intent i = new Intent(t.getContext(),Menu_Principal.class);
             t.getContext().startActivity(i);
 
@@ -288,4 +297,11 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
         Loguearse loguearse = new Loguearse();
         loguearse.execute(objetos);
     }
-}
+
+
+
+
+    }
+
+
+

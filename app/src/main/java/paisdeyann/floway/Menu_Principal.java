@@ -1,9 +1,13 @@
 package paisdeyann.floway;
 
-import android.content.Context;
+
+
+import android.content.Intent;
+
 import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -188,14 +193,31 @@ public class Menu_Principal extends AppCompatActivity
 
         //parte de los botones fab
         final View actionB = findViewById(R.id.boton_b);
-
+        menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
         com.getbase.floatingactionbutton.FloatingActionButton actionC = new com.getbase.floatingactionbutton.FloatingActionButton(getBaseContext());
         actionC.setTitle("Elegir Pasajero / Conductor");
         actionC.setImageDrawable(getResources().getDrawable(R.drawable.mostrar));
 
+        //boton desconectar
 
+        com.getbase.floatingactionbutton.FloatingActionButton desc = ( com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.action_a);
+        desc.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(map.conectado==1){
+                    if(menuMultipleActions.isExpanded())menuMultipleActions.collapse();
+                map.desconecta();
+                    Toast.makeText(Menu_Principal.this, "Estas desconectado", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    if(menuMultipleActions.isExpanded())menuMultipleActions.collapse();
+                    map.conecta();
+                    Toast.makeText(Menu_Principal.this, "Estas conectado", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-
+        //boton multimenu, no tocar
         actionC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,24 +230,30 @@ public class Menu_Principal extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 pasCon = !pasCon;
+
+                //boton eres pasajero
                 if(pasCon){
                     //cambia el texto y el color
                     //actionB.setDrawingCacheBackgroundColor(getResources().getColor(R.color.pink));
+                    if(menuMultipleActions.isExpanded())menuMultipleActions.collapse();
                     actionB.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.primary)));
-                    actionB.setBackground(getResources().getDrawable(R.drawable.android_pasajero));
+                    actionB.setBackground(getResources().getDrawable(R.drawable.pasajero_android));
+                    map.pintaConductores();
                     Toast.makeText(Menu_Principal.this, "Eres Pasajero", Toast.LENGTH_SHORT).show();
-
-                }else{
+                }
+                //boton eres conductor
+                else{
+                    if(menuMultipleActions.isExpanded())menuMultipleActions.collapse();
                     actionB.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.accent)));
-                    actionB.setBackground(getResources().getDrawable(R.drawable.coche_android));
+                    actionB.setBackground(getResources().getDrawable(R.drawable.coche));
+                    map.pintaPasajeros();
                     Toast.makeText(Menu_Principal.this, "Eres Conductor", Toast.LENGTH_SHORT).show();
-
                 }
             }
         });
 
 
-        menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+
         menuMultipleActions.addButton(actionC);
 
 
@@ -299,7 +327,7 @@ public class Menu_Principal extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            startActivity(new Intent(this, SettingsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
