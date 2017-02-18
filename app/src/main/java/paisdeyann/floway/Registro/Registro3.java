@@ -3,15 +3,25 @@ package paisdeyann.floway.Registro;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -20,17 +30,32 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.soundcloud.android.crop.Crop;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import java.sql.Timestamp;
 
 import paisdeyann.floway.MainActivity;
+import paisdeyann.floway.Objetos.Usuario;
 import paisdeyann.floway.R;
 import paisdeyann.floway.Threads.InsertarUsuario;
 
@@ -39,10 +64,17 @@ public class Registro3 extends AppCompatActivity {
     Button btnempezar;
     Button botonBuscarFoto;
     Registro3 activity;
+    TextView txtNombre;
+
+    SharedPreferences mySharedPreferences;
+
+    String urlImagenDescargar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registro_3);
+
+        mySharedPreferences = getSharedPreferences(Registro1.PREFS, Activity.MODE_PRIVATE);
 
         activity = this;
 
@@ -55,6 +87,9 @@ public class Registro3 extends AppCompatActivity {
 
         //asignamos el CornerRadius
         roundedDrawable.setCornerRadius(originalBitmap.getHeight());
+
+        txtNombre = (TextView) findViewById(R.id.textViewNombre);
+        txtNombre.setText(mySharedPreferences.getString("Nombre",""));
 
         imageView = (ImageView) findViewById(R.id.imageView2);
 
@@ -76,7 +111,7 @@ public class Registro3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //imageView.setImageDrawable(null);
-                Log.d("prueba","paso por aki pero como si no");
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setMessage("Elige como quieres coger la foto").setTitle("coger foto");
                 builder.setPositiveButton("Camara", new DialogInterface.OnClickListener() {
@@ -140,14 +175,65 @@ public class Registro3 extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "vuelvo", Toast.LENGTH_SHORT).show();
             Bitmap fotoEnviar = (Bitmap) result.getExtras().get("data");
 
-
-            RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), fotoEnviar);
+           // RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), fotoEnviar);
 
             //asignamos el CornerRadius
-            roundedDrawable.setCornerRadius(fotoEnviar.getHeight());
+          //  roundedDrawable.setCornerRadius(fotoEnviar.getHeight());
+
+            Drawable d = new BitmapDrawable(getResources(), fotoEnviar);
+            Bitmap fotoEnviar2 = getRoundedCornerBitmap(d,true);
 
 
-            imageView.setImageDrawable(roundedDrawable);
+            imageView.setImageBitmap(fotoEnviar2);
+
+                        /* toco firebase subir fotos */
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+            String mensajeFecha = ""+timestamp;
+            String mensaje = mensajeFecha.replace(" ","");
+            mensaje = mensaje.replace("-","");
+            mensaje = mensaje.replace(":","");
+            mensaje = mensaje.replace(".","");
+
+
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://flowaychatviajes.appspot.com");
+
+            StorageReference fotoReference = storageRef.child(mensaje+"-foto.jpg");
+
+
+/*
+            imageView.setDrawingCacheEnabled(true);
+            imageView.buildDrawingCache();
+            Bitmap bitmap = imageView.getDrawingCache();
+            */
+            Bitmap bitmap = fotoEnviar;
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            UploadTask uploadTask = fotoReference.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                    urlImagenDescargar = ""+downloadUrl;
+                }
+            });
+
+
+
+
+
+
+            /* dejo de tocar */
         }
 
     }
@@ -201,7 +287,7 @@ public class Registro3 extends AppCompatActivity {
 
     public void insertarUsuario(){
 
-        SharedPreferences mySharedPreferences = getSharedPreferences(Registro1.PREFS, Activity.MODE_PRIVATE);
+
         // $nombre,$apellidos,$usuario,$password,$poblacion,$cp,$puntuacion,$horario,$data
 
         String nombre = mySharedPreferences.getString("Nombre","");
@@ -212,11 +298,14 @@ public class Registro3 extends AppCompatActivity {
         String cp = mySharedPreferences.getString("CP","");
         int puntuacion = 0;
         String horario = mySharedPreferences.getString("Horario","");
-        String data = "";
+        String data = urlImagenDescargar;
+
+
+
+
 
         //Toast.makeText(this, nombre+apellidos+usuario+password+poblacion+cp+horario, Toast.LENGTH_SHORT).show();
 
-        Log.d("prueba","voy a insertar: "+nombre+apellidos+usuario+password+poblacion+cp+horario);
 
         Object[] objetos = new Object[10];
         objetos[0] = nombre;
@@ -235,5 +324,46 @@ public class Registro3 extends AppCompatActivity {
         insertarUsuario.execute(objetos);
 
     }
+
+    public static Bitmap getRoundedCornerBitmap( Drawable drawable, boolean square) {
+        int width = 0;
+        int height = 0;
+
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap() ;
+
+        if(square){
+            if(bitmap.getWidth() < bitmap.getHeight()){
+                width = bitmap.getWidth();
+                height = bitmap.getWidth();
+            } else {
+                width = bitmap.getHeight();
+                height = bitmap.getHeight();
+            }
+        } else {
+            height = bitmap.getHeight();
+            width = bitmap.getWidth();
+        }
+
+        Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, width, height);
+        final RectF rectF = new RectF(rect);
+        final float roundPx = 90;
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
+    }
+
+
 }
 

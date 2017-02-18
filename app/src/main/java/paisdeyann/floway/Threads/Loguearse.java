@@ -202,6 +202,7 @@ public class Loguearse extends AsyncTask<Object, Object, TextView> implements Vi
                                 // Log.d("prueba","nombre"+usuario.getNombre()+" apellido "+usuario.getApellidos()+" pass "+usuario.getPassword()+" usuario "+usuario.getUsuario()+" id "+usuario.getId_usuario()+" cp "+usuario.getCp()+" horario "+usuario.getHorario()+" poblacion "+usuario.getPoblacion()+" puntuacion "+usuario.getPuntuacion()+" foto "+usuario.getFoto());
 
                                 Conexion.usuarioActivo = usuario;
+                                Log.d("prueba","usuario activo es "+Conexion.usuarioActivo.getNombre()+" id "+Conexion.usuarioActivo.getId_usuario());
 
                                 logueado = "true";
 

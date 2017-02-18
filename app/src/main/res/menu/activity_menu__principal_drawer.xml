@@ -3,6 +3,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/perfil"
+            android:icon="@drawable/ic_star"
+            android:title="Perfil" />
+        <item
             android:id="@+id/busca"
             android:icon="@drawable/ic_busca"
             android:title="Buscar Gente" />
@@ -10,10 +14,7 @@
             android:id="@+id/message"
             android:icon="@drawable/ic_message"
             android:title="Mensajes" />
-        <item
-            android:id="@+id/puntuacion"
-            android:icon="@drawable/ic_star"
-            android:title="Puntuación" />
+
         <item
             android:id="@+id/publicaciones"
             android:icon="@drawable/ic_notify"

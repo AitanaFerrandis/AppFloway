@@ -33,6 +33,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import paisdeyann.floway.Conexion.Conexion;
 import paisdeyann.floway.Menu_Principal;
+import paisdeyann.floway.Objetos.Usuario;
 import paisdeyann.floway.R;
 import paisdeyann.floway.Registro.Registro2;
 
@@ -44,6 +45,8 @@ import static paisdeyann.floway.R.id.imageView;
  */
 
 public class InsertarUsuario extends AsyncTask<Object, Object, Object> {
+
+    Usuario usuario=null;
 
 
     private Object View;
@@ -95,11 +98,10 @@ public class InsertarUsuario extends AsyncTask<Object, Object, Object> {
 
 
         String POST_PARAMS = "nombre="+parametros[0]+"&apellidos="+parametros[1]+"&usuario="+parametros[2]+"&password="+parametros[3]
-                +"&poblacion="+parametros[4]+"&codigoPostal="+parametros[5]+"&puntuacion="+parametros[6]+"&horario="+parametros[7];
+                +"&poblacion="+parametros[4]+"&codigoPostal="+parametros[5]+"&puntuacion="+parametros[6]+"&horario="+parametros[7]+"&data="+parametros[8];
 
 
-        Log.d("prueba",cadenaConexion);
-        Log.d("prueba",POST_PARAMS);
+
         URL obj = null;
         try {
             obj = new URL(cadenaConexion);
@@ -114,25 +116,40 @@ public class InsertarUsuario extends AsyncTask<Object, Object, Object> {
             dStream.close(); // Closing the output stream.<br />
             // For POST only - START
 
+            InputStream is = con.getInputStream();
+            String respuesta = readStream(is);
+            respuesta = respuesta.replaceAll("\n","");
+            Log.d("prueba","el usuario que acabo de insertar es id "+respuesta+ " sin salto");
+
+
+            usuario = new Usuario(Integer.parseInt(respuesta),(String)parametros[0],(String)parametros[1],(String)parametros[2],(String)parametros[3],(String)parametros[4],(String)parametros[5], (String)parametros[7],(int)parametros[6],(String)parametros[8],1,0,0,0);
+            Conexion.usuarioActivo = usuario;
+            Log.d("prueba","usuario activo es abajo: ");
+            usuario.imprimir();
+
             int responseCode = con.getResponseCode();
             System.out.println("POST Response Code :: " + responseCode);
 
             if (responseCode == HttpURLConnection.HTTP_OK) { //success
                 Log.d("prueba","http ok");
-                BufferedReader in = new BufferedReader(new InputStreamReader(
-                        con.getInputStream()));
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                Log.d("prueba","llego");
                 String inputLine;
                 StringBuffer response = new StringBuffer();
-
+                Log.d("prueba","llego1");
+                /*
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
+                    Log.d("prueba","llego2");
                 }
+                */
                 in.close();
-
+                Log.d("prueba","llego3");
                 // print result
                 System.out.println(response.toString());
+                Log.d("prueba","estoy imprimiendo un salto de linea "+respuesta+" creo q si");
 
-                if (response.toString().equals("Usuario insertado")){
+                if (!respuesta.equals("")){
 
                     ImageView v= (ImageView)parametros[9];
 
@@ -175,6 +192,32 @@ public class InsertarUsuario extends AsyncTask<Object, Object, Object> {
         }
 
 
+    }
+
+    public String readStream(InputStream in){
+        //llegim de l’InputStream i ho conver5m a un String
+        StringBuilder stringBuilder = new StringBuilder();  // cadena q iremos añadiendo los datos del documento JSON
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in)); // buffer donde iremos leyendo el documento json que nose envie el servidor
+        String line;
+
+        try {
+            while ((line = reader.readLine()) != null) {
+
+                stringBuilder.append(line).append('\n');
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                in.close();
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return stringBuilder.toString();
     }
 
 

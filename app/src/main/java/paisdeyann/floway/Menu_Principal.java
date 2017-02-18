@@ -38,17 +38,20 @@ import com.google.firebase.database.ValueEventListener;
 
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 import paisdeyann.floway.Conexion.Conexion;
 import paisdeyann.floway.FragmentsTabs.MapViewFragment;
 import paisdeyann.floway.FragmentsTabs.PantallaChat;
 import paisdeyann.floway.FragmentsTabs.PantallaTransacciones;
 import paisdeyann.floway.Objetos.Conversacion;
+import paisdeyann.floway.Threads.PonerFotoEnUnImageView;
 
 
 public class Menu_Principal extends AppCompatActivity
@@ -63,7 +66,7 @@ public class Menu_Principal extends AppCompatActivity
     int positionAnt=0;
     boolean pasCon = false;
 
-
+    ImageView imagenCabeceraNavigationDrawer;
 
 
     ArrayList<Conversacion> conversaciones = new ArrayList<Conversacion>();
@@ -74,6 +77,42 @@ public class Menu_Principal extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu__principal);
+
+        Log.d("prueba","empiezo el menu_principal");
+
+        /*
+        imagenCabeceraNavigationDrawer = (ImageView) findViewById(R.id.imageView);
+
+        Object[] objetos = new Object[3];
+        objetos[0] = imagenCabeceraNavigationDrawer;
+        objetos[1] = Conexion.usuarioActivo.getFoto();
+        objetos[2] = getApplicationContext();
+
+        PonerFotoEnUnImageView myThreadFoto = new PonerFotoEnUnImageView();
+        myThreadFoto.execute(objetos);
+*/
+        NavigationView navigation;
+
+        navigation = (NavigationView) findViewById(R.id.nav_view);
+        View v = navigation.getHeaderView(0);
+        ImageView imagen = (ImageView) v.findViewById(R.id.imageView);
+        TextView textoNombre = (TextView) v.findViewById(R.id.textViewNombreNavigation);
+        TextView textoApellidos = (TextView) v.findViewById(R.id.textViewApellidosNavigation);
+
+        Object[] objetos = new Object[3];
+        objetos[0] = imagen;
+        objetos[1] = Conexion.usuarioActivo.getFoto();
+        objetos[2] = getApplicationContext();
+
+        PonerFotoEnUnImageView myThreadFoto = new PonerFotoEnUnImageView();
+        myThreadFoto.execute(objetos);
+
+
+        textoNombre.setText(Conexion.usuarioActivo.getNombre());
+        textoApellidos.setText(Conexion.usuarioActivo.getApellidos());
+
+
+
         map=new MapViewFragment();
         map.setContext(getApplicationContext(),this);
 
@@ -348,9 +387,14 @@ public class Menu_Principal extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), PuntuacionActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.publicaciones) {
+        } else if (id == R.id.perfil) {
+
+            Intent intent = new Intent(getApplicationContext(),Perfil.class);
+            startActivity(intent);
 
         } else if (id == R.id.invita) {
+            Intent intent = new Intent(getApplicationContext(),Invitar_Amigos.class);
+            startActivity(intent);
 
         } else if (id == R.id.transaction) {
 

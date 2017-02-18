@@ -63,6 +63,7 @@
             android:label="@string/title_activity_settings" />
         <activity android:name=".Mensajes" />
         <activity android:name=".PuntuacionActivity"></activity>
+        <activity android:name=".Invitar_Amigos"></activity>
     </application>
 
 </manifest>
