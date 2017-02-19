@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Objects;
 
 import paisdeyann.floway.Conexion.Conexion;
 import paisdeyann.floway.Objetos.Conversacion;
+import paisdeyann.floway.Threads.ConseguirImagenConIdYPonerEnImageView;
 import paisdeyann.floway.Threads.ConseguirUsuarioPorId;
 
 /**
@@ -66,7 +68,17 @@ public class AdaptadorGrupoMensajes extends RecyclerView.Adapter<AdaptadorGrupoM
         ConseguirUsuarioPorId myThread = new ConseguirUsuarioPorId();
         myThread.execute(objetos);
 
+        // 0 contexto
+        // 1 id del usuario q queremos coger la foto
+        // 2 imageView donde va la foto
 
+        Object[] objetos2 = new Object[3];
+        objetos2[0] = contexto;
+        objetos2[1] = id;
+        objetos2[2] = holder.foto;
+
+        ConseguirImagenConIdYPonerEnImageView myOtroThread = new ConseguirImagenConIdYPonerEnImageView();
+        myOtroThread.execute(objetos2);
 
         //holder.textViewNombre.setText(""+id);
 
@@ -82,6 +94,7 @@ public class AdaptadorGrupoMensajes extends RecyclerView.Adapter<AdaptadorGrupoM
         TextView textViewFecha;
         TextView textViewNombre;
         View view;
+        ImageView foto;
         String chat;
 
         public AdaptadorGrupoMensajesViewHolder(View itemView) {
@@ -89,6 +102,7 @@ public class AdaptadorGrupoMensajes extends RecyclerView.Adapter<AdaptadorGrupoM
 
             textViewFecha = (TextView) itemView.findViewById(R.id.textViewFechaItemGrupoMensaje);
             textViewNombre = (TextView) itemView.findViewById(R.id.textViewPersonaItemConversacion);
+            foto = (ImageView) itemView.findViewById(R.id.imageViewFotoGrupoMensajes);
             view = itemView;
             view.setOnClickListener(this);
 

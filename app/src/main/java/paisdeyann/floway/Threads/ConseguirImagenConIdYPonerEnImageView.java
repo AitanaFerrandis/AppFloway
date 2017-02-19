@@ -5,8 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -25,44 +24,45 @@ import paisdeyann.floway.Conexion.Conexion;
 import paisdeyann.floway.Objetos.Usuario;
 
 /**
- * Created by caboc on 17/02/2017.
+ * Created by caboc on 19/02/2017.
  */
 
-public class ConseguirUsuarioPorId extends AsyncTask<Object,Object,Object> {
+public class ConseguirImagenConIdYPonerEnImageView extends AsyncTask<Object,Object,Object> {
 
-    Context contexto;
     int usuarioComprobar;
-    Usuario usuarioCogerNombre;
+    Context contexto;
+    String jason;
+    Usuario usuario;
+
 
     @Override
     protected Object doInBackground(Object... params) {
 
-        /*
+        // 0 contexto
+        // 1 id del usuario q queremos coger la foto
+        // 2 imageView donde va la foto
 
-        [0] = contexto;
-        [1] = id;
-        [2] = holder.textViewNombre;
-        [3] = holder.textViewFecha;
-        [4] = conversaciones.get(position).getFecha();
-
-
-         */
-
-        contexto = (Context)params[0];
-        usuarioComprobar = (int)params[1];
-
-        String jason;
-
-
+        contexto = (Context) params[0];
+        usuarioComprobar = (int) params[1];
 
         if(comprobarConexion()){
+
             jason = conseguirJason();
-            usuarioCogerNombre = parsearJason(jason);
+            usuario = parsearJason(jason);
+
         }
-        publishProgress(params);
+
+        // params[0] imageView
+        // params[1] String con la url de la imagen
+        // params[2] contexto
+
+
+
+
 
         return params[2];
     }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -71,17 +71,21 @@ public class ConseguirUsuarioPorId extends AsyncTask<Object,Object,Object> {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        Log.d("prueba","estoy llegando y pongo el nombre de "+usuarioCogerNombre.getNombre()+" "+usuarioCogerNombre.getApellidos());
-        ((TextView)o).setText(usuarioCogerNombre.getNombre()+" "+usuarioCogerNombre.getApellidos());
+
+        Object[] objetos2 = new Object[3];
+        objetos2[0] = (ImageView)o;
+        objetos2[1] = usuario.getFoto();
+        objetos2[2] = contexto;
+
+        PonerFotoEnUnImageView myThread = new PonerFotoEnUnImageView();
+        myThread.execute(objetos2);
+
 
     }
 
     @Override
     protected void onProgressUpdate(Object... values) {
         super.onProgressUpdate(values);
-        ((TextView)values[3]).setText((String)values[4]);
-
-
     }
 
     @Override
@@ -90,27 +94,8 @@ public class ConseguirUsuarioPorId extends AsyncTask<Object,Object,Object> {
     }
 
 
-    public Usuario parsearJason(String jason){
-
-        Usuario usuario = null;
-
-        Gson gson = new Gson(); // usaremos esto para pasear el jason
-        JsonParser parseador = new JsonParser();    // necesitamos este objeto para conseguir el elemento raiz del String
 
 
-        JsonElement raiz = parseador.parse(jason); // conseguimos el elemnto raiz del string
-        JsonArray lista = raiz.getAsJsonArray();    // el elemento raiz es un array de objetos jason por eso nos creamos un objeto JsonArray y lo cogemos con este metodo
-
-        for (JsonElement elemento : lista) {    // recorremos el JsonArray lista con este for each abreviado y nos creamos un nuevo usuario
-            usuario = gson.fromJson(elemento, Usuario.class);
-            Log.d("prueba",usuario.getNombre());
-        }
-
-        //Log.d("prueba","usuario conseguido por id");
-        //usuario.imprimir();
-
-        return usuario;
-    }
 
 
 
@@ -130,7 +115,6 @@ public class ConseguirUsuarioPorId extends AsyncTask<Object,Object,Object> {
 
         return respuesta;
     }
-
 
     public String conseguirJason(){
 
@@ -193,6 +177,28 @@ public class ConseguirUsuarioPorId extends AsyncTask<Object,Object,Object> {
         return stringBuilder.toString();
     }
 
+
+    public Usuario parsearJason(String jason){
+
+        Usuario usuario = null;
+
+        Gson gson = new Gson(); // usaremos esto para pasear el jason
+        JsonParser parseador = new JsonParser();    // necesitamos este objeto para conseguir el elemento raiz del String
+
+
+        JsonElement raiz = parseador.parse(jason); // conseguimos el elemnto raiz del string
+        JsonArray lista = raiz.getAsJsonArray();    // el elemento raiz es un array de objetos jason por eso nos creamos un objeto JsonArray y lo cogemos con este metodo
+
+        for (JsonElement elemento : lista) {    // recorremos el JsonArray lista con este for each abreviado y nos creamos un nuevo usuario
+            usuario = gson.fromJson(elemento, Usuario.class);
+            Log.d("prueba",usuario.getNombre());
+        }
+
+        //Log.d("prueba","usuario conseguido por id");
+        //usuario.imprimir();
+
+        return usuario;
+    }
 
 
 }

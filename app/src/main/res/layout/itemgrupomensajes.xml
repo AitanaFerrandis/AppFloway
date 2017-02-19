@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,24 +14,46 @@
     android:clickable="true"
     android:focusable="true"
     card_view:cardElevation="4dp">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="150dp">
 
-    <TextView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewFechaItemGrupoMensaje"
-        android:textSize="20sp"
-        android:paddingTop="20sp"
-        android:paddingLeft="20sp" />
+        android:layout_height="match_parent"
+        android:background="@color/item_message_chat_recibe">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewPersonaItemConversacion"
-        android:textSize="30sp"
-        android:paddingTop="20sp"
-        android:paddingLeft="40sp" />
-</LinearLayout>
-    </android.support.v7.widget.CardView>
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            card_view:srcCompat="@drawable/login"
+            android:id="@+id/imageViewFotoGrupoMensajes"
+            android:layout_weight="1"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="10dp" />
+
+        <LinearLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewFechaItemGrupoMensaje"
+            android:textSize="12sp"
+            android:paddingTop="20sp"
+            android:paddingLeft="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewPersonaItemConversacion"
+            android:textSize="20sp"
+            android:paddingTop="20sp"
+            android:paddingLeft="40sp"
+            tools:text="hola" />
+    </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

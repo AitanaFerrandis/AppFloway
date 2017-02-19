@@ -2,12 +2,13 @@ package paisdeyann.floway.Objetos;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.sql.Blob;
 
 /**
  * Created by caboc on 14/01/2017.
  */
-public class Usuario {
+public class Usuario implements Serializable{
 
 
     int id_usuario;

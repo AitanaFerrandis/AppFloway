@@ -42,6 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
@@ -80,6 +81,7 @@ public class Menu_Principal extends AppCompatActivity
 
         Log.d("prueba","empiezo el menu_principal");
 
+
         /*
         imagenCabeceraNavigationDrawer = (ImageView) findViewById(R.id.imageView);
 
@@ -106,6 +108,18 @@ public class Menu_Principal extends AppCompatActivity
 
         PonerFotoEnUnImageView myThreadFoto = new PonerFotoEnUnImageView();
         myThreadFoto.execute(objetos);
+
+        v.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Menu_Principal.this,Perfil.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("usuario",(Serializable)Conexion.usuarioActivo);
+                intent.putExtra("bundle",bundle);
+                startActivity(intent);
+
+            }
+        });
 
 
         textoNombre.setText(Conexion.usuarioActivo.getNombre());
@@ -139,8 +153,11 @@ public class Menu_Principal extends AppCompatActivity
                     Conversacion c = ((DataSnapshot) i.next()).getValue(Conversacion.class);
                    // Log.d("prueba","estoy al principio "+c.getChat()+" "+c.getId1()+" "+c.getId2());
 
+                    if(conversaciones.isEmpty()){
+                        Log.d("prueba","el array esta vacio");
+                    }
 
-
+                   // Log.d("prueba","yo "+Conexion.usuarioActivo.getNombre()+" con id "+Conexion.usuarioActivo.getId_usuario()+" voy a coger todos mis chats por eso compruebo si estoy en "+c.getId1()+" o en "+c.getId2());
                     if(Conexion.usuarioActivo.getId_usuario() == c.getId1() || Conexion.usuarioActivo.getId_usuario() == c.getId2()){
 
 

@@ -107,7 +107,11 @@ public class PantallaChat extends Fragment {
 
                         Log.d("prueba","voy a añadir una nueva conversacion "+model.getFecha()+" "+model.getId1()+" "+model.getChat());
 
-                        conversaciones.add(model);
+                        if(Conexion.usuarioActivo.getId_usuario() == model.getId1() || Conexion.usuarioActivo.getId_usuario() == model.getId2()){
+                            conversaciones.add(model);
+                        }
+
+
 
                         rv.scrollToPosition(conversaciones.size()-1);
                         adaptador.notifyItemInserted(conversaciones.size()-1);

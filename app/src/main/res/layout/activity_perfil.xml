@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/second_accent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="right|bottom|end"
+        android:src="@drawable/ic_message"
+        android:layout_marginLeft="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:elevation="2dp" />
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -12,41 +24,241 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="match_parent"
-                app:srcCompat="@color/accent"
+                app:srcCompat="@drawable/floridafondo"
                 android:id="@+id/imageView3"
+                android:layout_width="match_parent"
                 android:layout_height="200dp" />
+
+
+
+            <TextView
+                android:text="Nombre usuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewNombrePerfil"
+                android:textSize="30sp"
+                android:textColor="@color/cardview_light_background"
+                android:gravity="center_horizontal"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="13dp" />
 
             <ImageView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:srcCompat="@color/second_accent_dark"
                 android:id="@+id/imageView2"
-                android:layout_alignParentTop="true"
+                android:layout_marginTop="17dp"
+                android:layout_below="@+id/textViewNombrePerfil"
                 android:layout_centerHorizontal="true" />
-
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:fabSize="mini"
-                app:srcCompat="@drawable/ic_close_light"
-                android:id="@+id/floatingActionButton"
-
-                android:foregroundGravity="bottom|right"
-                android:layout_marginTop="174dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true" />
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_below="@+id/imageView2"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/LinearLayoutUsuario">
+
+                    <TextView
+                        android:text="Usuario:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView4"
+                        android:layout_weight="0"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="20dp" />
+
+                    <TextView
+                        android:text="Usuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textViewUsuarioPerfil"
+                        android:layout_weight="0"
+                        android:layout_marginLeft="80dp"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?attr/colorPrimary"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="20dp">
+
+                        <TextView
+                            android:text="Poblacion:"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textView3"
+                            android:layout_weight="0"
+                            android:layout_marginLeft="20dp"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:text="Poblacion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textViewPoblacionPerfil"
+                            android:layout_weight="0"
+                            android:textSize="20sp"
+                            android:layout_marginLeft="58dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:text="Código Postal:"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textView6"
+                            android:layout_weight="0"
+                            android:layout_marginLeft="20dp"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:text="CP"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textViewCodigoPostalPerfil"
+                            android:layout_weight="1"
+                            android:textSize="20sp"
+                            android:layout_marginLeft="20dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?attr/colorPrimary"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:text="Horario:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView8"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:text="Tarde"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textViewHorarioPerfil"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="80dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?attr/colorPrimary"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp" />
+
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/linearlayoutaesconder">
+
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ratingBar"
+                        android:numStars="5"
+                        android:layout_gravity="center_horizontal"
+                        android:stepSize="1"
+                        android:layout_marginBottom="10dp" />
+
+                    <Button
+                        android:layout_width="300dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/buttonValoramePerfil"
+                        android:background="@drawable/valorame"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="20dp"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/viewRaya"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?attr/colorPrimary"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp" />
+
+                <TextView
+                    android:text="Publicaciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="10dp" />
+
+                <android.support.v7.widget.RecyclerView
+
+                    android:layout_width="match_parent"
+
+                    android:layout_height="match_parent"
+
+                    android:id="@+id/recyclerViewPublicaciones"
+
+                    android:layout_alignParentStart="true"
+
+                    android:layout_alignParentEnd="true"
+
+                    android:scrollbars="vertical"/>
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/botonEnviarMensaje"
+                android:background="@drawable/anadirpublicacion"
+                android:paddingBottom="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="160dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginRight="10dp" />
+
 
         </RelativeLayout>
     </ScrollView>
+
 
 </RelativeLayout>

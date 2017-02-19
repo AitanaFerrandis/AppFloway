@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -52,8 +53,10 @@ import paisdeyann.floway.Mensajes;
 import paisdeyann.floway.Menu_Principal;
 import paisdeyann.floway.Objetos.Conversacion;
 import paisdeyann.floway.Objetos.Usuario;
+import paisdeyann.floway.Perfil;
 import paisdeyann.floway.R;
 import paisdeyann.floway.Threads.CambiaUbic;
+import paisdeyann.floway.Threads.ConseguirUsuarioPorIdParaConIntentPerfil;
 import paisdeyann.floway.Threads.ConseguirUsuariosPorRadio;
 import paisdeyann.floway.Threads.Desconecta;
 import paisdeyann.floway.Threads.DesconectarseCambiarPasajero;
@@ -536,24 +539,31 @@ public class MapViewFragment extends Fragment implements GoogleApiClient.Connect
                 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
         }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
                 Toast.makeText(context, "HAS DADO CANCELAR", Toast.LENGTH_SHORT).show();
+            }
+        }).setNeutralButton("VER PERFIL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String idMarca = marker.getSnippet();
+                idMarca = idMarca.replace("id:","");
+                idMarcaPuntoMarcado = Integer.parseInt(idMarca);
+
+                // params[0]  contexto
+                // params[1] id usuaria coger
+
+                Object[] objetos = new Object[2];
+                objetos[0] = getContext();
+                objetos[1] = idMarcaPuntoMarcado;
+
+                ConseguirUsuarioPorIdParaConIntentPerfil myThread2 = new ConseguirUsuarioPorIdParaConIntentPerfil();
+                myThread2.execute(objetos);
+
+
             }
         });
 

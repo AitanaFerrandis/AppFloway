@@ -6,7 +6,7 @@
 
     <color name="primary_light">#B2DFDB</color>
 
-    <color name="accent">#FF5252</color>
+    <color name="accent">#ff5252</color>
 
     <color name="accent_dark">#b33a3a</color>
 
@@ -33,7 +33,7 @@
     <color name="blue_semi_transparent">#805677fc</color>
     <color name="blue_semi_transparent_pressed">#80738ffe</color>
     <color name="item_message_chat_emite">#DCF8C6</color>
-    <color name="item_message_chat_recibe">#E9EBEB</color>
+    <color name="item_message_chat_recibe">#e9ebeb</color>
 
 
 
